@@ -27,7 +27,7 @@
         <mybatis-plus-generator.verson>3.5.1</mybatis-plus-generator.verson>
         <maven-resources-plugin.verson>3.2.0</maven-resources-plugin.verson>
         <spring-boot-maven-plugin.verson>2.5.3</spring-boot-maven-plugin.verson>
-        <sonar-maven-plugin.verson>3.8.0.2131</sonar-maven-plugin.verson>
+        <sonar-maven-plugin.verson>3.7.0.1746</sonar-maven-plugin.verson>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -83,11 +83,11 @@
             <artifactId>p6spy</artifactId>
             <version>${p6spy.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-resources-plugin</artifactId>
-            <version>${maven-resources-plugin.verson}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.apache.maven.plugins</groupId>-->
+<!--            <artifactId>maven-resources-plugin</artifactId>-->
+<!--            <version>${maven-resources-plugin.verson}</version>-->
+<!--        </dependency>-->
         <!--        <dependency>-->
         <!--            <groupId>com.baomidou</groupId>-->
         <!--            <artifactId>mybatis-plus-generator</artifactId>-->
