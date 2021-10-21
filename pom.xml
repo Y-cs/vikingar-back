@@ -27,7 +27,7 @@
         <mybatis-plus-generator.verson>3.5.1</mybatis-plus-generator.verson>
         <maven-resources-plugin.verson>3.2.0</maven-resources-plugin.verson>
         <spring-boot-maven-plugin.verson>2.5.3</spring-boot-maven-plugin.verson>
-        <sonar-maven-plugin.verson>3.7.0.1746</sonar-maven-plugin.verson>
+        <sonar-maven-plugin.verson>3.9.0.2155</sonar-maven-plugin.verson>
     </properties>
     <dependencyManagement>
         <dependencies>
