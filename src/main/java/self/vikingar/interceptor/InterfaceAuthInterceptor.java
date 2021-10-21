@@ -1,22 +1,15 @@
 package self.vikingar.interceptor;
 
-import com.sun.istack.internal.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.lang.NonNullApi;
 import org.springframework.lang.Nullable;
-import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import self.vikingar.ano.NoLoginRequired;
 import self.vikingar.config.exception.NoLoginException;
 import self.vikingar.manager.GlobalConstant;
 import self.vikingar.manager.session.SessionSupport;
-import self.vikingar.manager.thread.DefaultThreadContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
