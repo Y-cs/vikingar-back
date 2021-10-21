@@ -27,6 +27,7 @@
         <mybatis-plus-generator.verson>3.5.1</mybatis-plus-generator.verson>
         <maven-resources-plugin.verson>3.2.0</maven-resources-plugin.verson>
         <spring-boot-maven-plugin.verson>2.5.3</spring-boot-maven-plugin.verson>
+        <sonar-maven-plugin.verson>3.8.0.2131</sonar-maven-plugin.verson>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -99,6 +100,11 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot-maven-plugin.verson}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>${sonar-maven-plugin.verson}</version>
             </plugin>
         </plugins>
     </build>
