@@ -11,9 +11,13 @@
 
 
     <properties>
+        <!--Sonar参数-->
         <sonar.organization>y-cs</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-<!--        <sonar.login>c30b89b347c79b70cd7ec488c01aa800a8c2d29c</sonar.login>-->
+        <sonar.projectKey>Y-cs_vikingar-back</sonar.projectKey>
+        <sonar.login>ae0af55ff3a96e0780a747a8e88b70db42038311</sonar.login>
+        <sonar.branch.name>main</sonar.branch.name>
+        <!--版本-->
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <spring.version>2.5.3</spring.version>
@@ -84,11 +88,11 @@
             <artifactId>p6spy</artifactId>
             <version>${p6spy.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.apache.maven.plugins</groupId>-->
-<!--            <artifactId>maven-resources-plugin</artifactId>-->
-<!--            <version>${maven-resources-plugin.verson}</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.maven.plugins</groupId>-->
+        <!--            <artifactId>maven-resources-plugin</artifactId>-->
+        <!--            <version>${maven-resources-plugin.verson}</version>-->
+        <!--        </dependency>-->
         <!--        <dependency>-->
         <!--            <groupId>com.baomidou</groupId>-->
         <!--            <artifactId>mybatis-plus-generator</artifactId>-->
@@ -102,11 +106,11 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot-maven-plugin.verson}</version>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.sonarsource.scanner.maven</groupId>-->
-<!--                <artifactId>sonar-maven-plugin</artifactId>-->
-<!--                <version>${sonar-maven-plugin.verson}</version>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>${sonar-maven-plugin.verson}</version>
+            </plugin>
         </plugins>
     </build>
 
