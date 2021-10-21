@@ -13,7 +13,7 @@
     <properties>
         <sonar.organization>y-cs</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.login>c30b89b347c79b70cd7ec488c01aa800a8c2d29c</sonar.login>
+<!--        <sonar.login>c30b89b347c79b70cd7ec488c01aa800a8c2d29c</sonar.login>-->
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <spring.version>2.5.3</spring.version>
@@ -102,11 +102,11 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot-maven-plugin.verson}</version>
             </plugin>
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>${sonar-maven-plugin.verson}</version>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.sonarsource.scanner.maven</groupId>-->
+<!--                <artifactId>sonar-maven-plugin</artifactId>-->
+<!--                <version>${sonar-maven-plugin.verson}</version>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 
