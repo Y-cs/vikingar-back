@@ -1,7 +1,6 @@
 package self.vikingar.mapper.account;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import self.vikingar.model.domain.AccountDo;
 

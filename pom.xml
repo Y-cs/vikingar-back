@@ -15,7 +15,6 @@
         <sonar.organization>y-cs</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.projectKey>Y-cs_vikingar-back</sonar.projectKey>
-        <sonar.login>ae0af55ff3a96e0780a747a8e88b70db42038311</sonar.login>
         <sonar.branch.name>main</sonar.branch.name>
         <!--版本-->
         <maven.compiler.source>8</maven.compiler.source>
@@ -88,16 +87,6 @@
             <artifactId>p6spy</artifactId>
             <version>${p6spy.version}</version>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.maven.plugins</groupId>-->
-        <!--            <artifactId>maven-resources-plugin</artifactId>-->
-        <!--            <version>${maven-resources-plugin.verson}</version>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>com.baomidou</groupId>-->
-        <!--            <artifactId>mybatis-plus-generator</artifactId>-->
-        <!--            <version>${mybatis-plus-generator.verson}</version>-->
-        <!--        </dependency>-->
     </dependencies>
     <build>
         <plugins>
