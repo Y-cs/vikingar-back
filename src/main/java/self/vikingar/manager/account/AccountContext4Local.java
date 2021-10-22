@@ -2,7 +2,6 @@ package self.vikingar.manager.account;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
 import org.springframework.stereotype.Component;
 import self.vikingar.manager.session.SessionSupport;
 

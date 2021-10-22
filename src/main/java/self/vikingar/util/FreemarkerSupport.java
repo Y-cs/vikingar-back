@@ -3,14 +3,10 @@ package self.vikingar.util;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.springframework.util.ResourceUtils;
 import self.vikingar.model.dto.document.DocumentDto;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.*;
 
 /**
  * @Author: YuanChangShuai
@@ -27,10 +23,10 @@ public class FreemarkerSupport {
 
     private final String templateName;
 
-    private String writeFilePath;
+    private String writeFilePath = ResourceUtils.getURL("classpath:").getPath() + "static";
 
 
-    public FreemarkerSupport(String templatePath, String templateName) {
+    public FreemarkerSupport(String templatePath, String templateName) throws FileNotFoundException {
         this.templatePath = templatePath;
         this.templateName = templateName;
         this.configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);

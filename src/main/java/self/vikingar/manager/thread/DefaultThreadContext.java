@@ -1,10 +1,12 @@
 package self.vikingar.manager.thread;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Marker;
 import self.vikingar.manager.GlobalConstant;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @Author: YuanChangShuai
@@ -23,10 +25,12 @@ public class DefaultThreadContext implements ThreadContext {
 
     }
 
+    @Override
     public Object get(GlobalConstant tokenCacheKey) {
         return get(tokenCacheKey.getConstant2String());
     }
 
+    @Override
     public void put(GlobalConstant tokenCacheKey, Object value) {
         put(tokenCacheKey.getConstant2String(), value);
     }

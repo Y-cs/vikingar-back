@@ -5,10 +5,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import self.vikingar.config.exception.CommonException;
 import self.vikingar.manager.account.AccountContext;
+import self.vikingar.manager.account.AccountContextFactory;
 import self.vikingar.manager.session.SessionSupport;
 import self.vikingar.manager.session.TokenCreator;
 import self.vikingar.mapper.account.AccountMapper;
 import self.vikingar.model.domain.AccountDo;
+import self.vikingar.model.dto.account.AccountInfo;
 import self.vikingar.model.dto.account.AuthDto;
 
 /**
@@ -21,11 +23,11 @@ public class AccountServiceImpl implements AccountService {
 
     private final AccountMapper accountMapper;
 
-    private final AccountContext<AccountDo> accountContext;
+    private final AccountContext<AccountInfo> accountContext;
 
-    public AccountServiceImpl(AccountMapper accountMapper, AccountContext<AccountDo> accountContext) {
+    public AccountServiceImpl(AccountMapper accountMapper) {
         this.accountMapper = accountMapper;
-        this.accountContext = accountContext;
+        this.accountContext = AccountContextFactory.getInstance(AccountInfo.class);
     }
 
     @Override
@@ -44,7 +46,12 @@ public class AccountServiceImpl implements AccountService {
         }
         String token = TokenCreator.create();
         SessionSupport.putToken4Session(token);
-        accountContext.putAccount(accountDo);
+        accountContext.putAccount(new AccountInfo()
+                .id(accountDo.getId())
+                .deactivate(accountDo.getDeactivate())
+                .username(accountDo.getUsername())
+                .password(accountDo.getPassword())
+        );
         return new AuthDto().setToken(token);
     }
 

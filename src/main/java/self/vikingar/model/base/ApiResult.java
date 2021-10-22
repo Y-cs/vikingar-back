@@ -21,7 +21,7 @@ public class ApiResult<T> {
         this.code = code;
     }
 
-    public static ApiResult success() {
+    public static ApiResult<String> success() {
         return new ApiResult<>("成功", OK);
     }
 

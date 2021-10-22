@@ -1,9 +1,10 @@
 package self.vikingar.model.base;
 
 import lombok.Data;
+import self.vikingar.manager.account.AccountContextFactory;
+import self.vikingar.model.dto.account.AccountInfo;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * @Author: YuanChangShuai
@@ -52,5 +53,22 @@ public class BaseModel {
      * db comment -> 是否有效(0无效  1有效)
      */
     private Integer valid;
+
+
+    public void isInsert() {
+        id = null;
+        AccountInfo account = AccountContextFactory.getInstance().getAccount();
+        createdId = account.id();
+        createdName = account.username();
+        createdTime = LocalDateTime.now();
+        valid = 1;
+    }
+
+    public void isUpdate() {
+        AccountInfo account = AccountContextFactory.getInstance().getAccount();
+        lastModifiedId = account.id();
+        lastModifiedName = account.username();
+        lastModifiedTime = LocalDateTime.now();
+    }
 
 }

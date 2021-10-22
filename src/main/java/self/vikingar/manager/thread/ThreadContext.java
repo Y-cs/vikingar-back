@@ -1,11 +1,17 @@
 package self.vikingar.manager.thread;
 
+import self.vikingar.manager.GlobalConstant;
+
 /**
  * @Author: YuanChangShuai
  * @Date: 2021/10/9 16:06
  * @Description: 线程间上下文
  **/
 public interface ThreadContext {
+
+    Object get(GlobalConstant tokenCacheKey);
+
+    void put(GlobalConstant tokenCacheKey, Object value);
 
     /**
      * 存入

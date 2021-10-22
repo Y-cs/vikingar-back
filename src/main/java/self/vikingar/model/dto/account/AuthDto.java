@@ -2,7 +2,6 @@ package self.vikingar.model.dto.account;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
-import self.vikingar.manager.session.TokenCreator;
 
 /**
  * @Author: YuanChangShuai

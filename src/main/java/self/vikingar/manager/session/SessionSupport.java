@@ -1,7 +1,7 @@
 package self.vikingar.manager.session;
 
 import self.vikingar.manager.GlobalConstant;
-import self.vikingar.manager.thread.DefaultThreadContext;
+import self.vikingar.manager.thread.ThreadContextFactory;
 
 /**
  * @Author: YuanChangShuai
@@ -16,7 +16,7 @@ public class SessionSupport {
      * @return
      */
     public static String getToken4Session() {
-        return (String) DefaultThreadContext.getInstance().get(GlobalConstant.TOKEN_CACHE_KEY);
+        return (String) ThreadContextFactory.getInstance().get(GlobalConstant.TOKEN_CACHE_KEY);
     }
 
     /**
@@ -25,10 +25,10 @@ public class SessionSupport {
      * @param token
      */
     public static void putToken4Session(String token) {
-        DefaultThreadContext.getInstance().put(GlobalConstant.TOKEN_CACHE_KEY, token);
+        ThreadContextFactory.getInstance().put(GlobalConstant.TOKEN_CACHE_KEY, token);
     }
 
-    public static void clear(){
-        DefaultThreadContext.getInstance().clear();
+    public static void clear() {
+        ThreadContextFactory.getInstance().clear();
     }
 }
