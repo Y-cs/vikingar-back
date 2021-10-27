@@ -9,15 +9,13 @@ import self.vikingar.model.dto.account.AccountInfo;
  **/
 public class AccountContextFactory {
 
+    private static final AccountContext<AccountInfo> ACCOUNT_CONTEXT = new AccountContext4Local<>();
+
     private AccountContextFactory() {
     }
 
-    public static <T> AccountContext<T> getInstance(Class<T> clazz) {
-        return new AccountContext4Local<T>();
-    }
-
     public static AccountContext<AccountInfo> getInstance() {
-        return new AccountContext4Local<AccountInfo>();
+        return ACCOUNT_CONTEXT;
     }
 
 

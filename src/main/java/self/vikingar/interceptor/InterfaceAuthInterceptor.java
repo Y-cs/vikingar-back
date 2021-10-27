@@ -36,7 +36,7 @@ public class InterfaceAuthInterceptor implements HandlerInterceptor {
             throw new NoLoginException();
         }
         SessionSupport.putToken4Session(token);
-        return false;
+        return true;
     }
 
     @Override

@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class AccountContext4Local<T> implements AccountContext<T> {
 
     private final Cache<String, T> CACHE = CacheBuilder.newBuilder()
+            .recordStats()
             .expireAfterAccess(5, TimeUnit.HOURS).build();
 
     @Override

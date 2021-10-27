@@ -14,9 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @Author: YuanChangShuai
  * @Date: 2021/10/18 18:13
- * @Description:    前置处理-拦截器
- *  在应用层最前层的拦截处理器
- *  现在主要处理了跨域问题,和资源销毁问题
+ * @Description: 前置处理-拦截器
+ * 在应用层最前层的拦截处理器
+ * 现在主要处理了跨域问题,和资源销毁问题
  **/
 @Slf4j
 public class PreInterceptor implements HandlerInterceptor {
@@ -40,6 +40,7 @@ public class PreInterceptor implements HandlerInterceptor {
             response.setStatus(HttpStatus.NO_CONTENT.value());
             return false;
         }
+        SessionSupport.clear();
         return true;
     }
 

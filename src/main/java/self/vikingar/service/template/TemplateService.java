@@ -1,6 +1,8 @@
 package self.vikingar.service.template;
 
-import java.io.InputStream;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * @Author: YuanChangShuai
@@ -8,13 +10,16 @@ import java.io.InputStream;
  * @Description:
  **/
 public interface TemplateService {
+
     /**
      * 上传模板
-     * @param name
-     * @param inputStream
-     * @param size
+     * @param file
+     * @param templateName
+     * @param description
+     * @param isDefault
      * @return
+     * @throws IOException
      */
-    boolean updateTemplate(String name, InputStream inputStream, long size);
+    boolean updateTemplate(MultipartFile file, String templateName, String description, boolean isDefault) throws IOException;
 
 }

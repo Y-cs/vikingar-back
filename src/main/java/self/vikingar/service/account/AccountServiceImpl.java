@@ -27,7 +27,7 @@ public class AccountServiceImpl implements AccountService {
 
     public AccountServiceImpl(AccountMapper accountMapper) {
         this.accountMapper = accountMapper;
-        this.accountContext = AccountContextFactory.getInstance(AccountInfo.class);
+        this.accountContext = AccountContextFactory.getInstance();
     }
 
     @Override

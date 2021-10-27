@@ -1,0 +1,15 @@
+spring:
+  # 数据库配置
+  datasource:
+    # 驱动
+    driver-class-name:
+    # 链接
+    url:
+    #用户名
+    username:
+    # 密码
+    password:
+application:
+  config:
+    # 文件保存目录
+    file-base:

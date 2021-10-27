@@ -1,10 +1,10 @@
 package self.vikingar.manager.io;
 
-import self.vikingar.config.AsyncConfig;
 import self.vikingar.config.SpringApplication;
 import self.vikingar.mapper.source.FileSourceMapper;
 import self.vikingar.model.domain.FileSourceDo;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -22,25 +22,27 @@ public interface IoSupport {
      */
     public void setFolderName(String name);
 
+
     /**
      * 保存文件
      *
      * @param name
      * @param inputStream
      * @param size
+     * @param cover
      * @return
+     * @throws IOException
      */
-    public boolean saveFile(String name, InputStream inputStream, long size) throws IOException;
+    long saveFile(String name, InputStream inputStream, long size, boolean cover) throws IOException;
 
     /**
      * 保存信息到数据库
      *
      * @param fileSourceDo
      */
-    default void saveInfo(FileSourceDo fileSourceDo) {
-        AsyncConfig.sync(() -> {
-            fileSourceDo.isInsert();
-            SpringApplication.getContext().getBean(FileSourceMapper.class).insert(fileSourceDo);
-        });
+    default void saveInfo(@Nonnull FileSourceDo fileSourceDo) {
+        fileSourceDo.isInsert();
+        SpringApplication.getContext().getBean(FileSourceMapper.class).insert(fileSourceDo);
     }
+
 }

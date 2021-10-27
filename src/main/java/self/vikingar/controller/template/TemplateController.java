@@ -24,8 +24,12 @@ public class TemplateController {
     }
 
     @PostMapping("uploadTemplate")
-    public ApiResult<String> uploadTemplate(@RequestParam("file") MultipartFile file) throws IOException {
-        templateService.updateTemplate(file.getName(), file.getInputStream(), file.getSize());
+    public ApiResult<String> uploadTemplate(@RequestParam("file") MultipartFile file,
+                                            @RequestParam(value = "templateName", defaultValue = "") String templateName,
+                                            @RequestParam(value = "description", defaultValue = "") String description,
+                                            @RequestParam(value = "isDefault", defaultValue = "false") boolean isDefault
+    ) throws IOException {
+        templateService.updateTemplate(file,templateName, description, isDefault);
         return ApiResult.success();
     }
 

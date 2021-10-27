@@ -13,7 +13,7 @@ import self.vikingar.model.base.BaseModel;
  **/
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("account_info")
+@TableName("file_source")
 @Accessors(chain = true)
 public class FileSourceDo extends BaseModel {
 
