@@ -19,7 +19,7 @@ public class DocumentController {
         this.documentService = documentService;
     }
 
-    public ApiResult<?> addDocument(DocumentVo documentVo) {
+    public ApiResult<String> addDocument(DocumentVo documentVo) {
         documentService.addDocument(documentVo);
         return ApiResult.success();
     }

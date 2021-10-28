@@ -26,7 +26,7 @@ public class ApiResult<T> {
         this.code = OK;
     }
 
-    public static ApiResult<?> success() {
+    public static ApiResult<String> success() {
         return new ApiResult<>("成功", OK);
     }
 
@@ -34,15 +34,15 @@ public class ApiResult<T> {
         return new ApiResult<>(t, OK);
     }
 
-    public static ApiResult<?> fail() {
+    public static ApiResult<String> fail() {
         return new ApiResult<>("有点问题啊", FAIL);
     }
 
-    public static ApiResult<?> fail(String err) {
+    public static ApiResult<String> fail(String err) {
         return new ApiResult<>(err, FAIL);
     }
 
-    public static ApiResult<?> fail(RuntimeException runtimeException) {
+    public static ApiResult<String> fail(RuntimeException runtimeException) {
         return new ApiResult<>(runtimeException.getMessage(), FAIL);
     }
 

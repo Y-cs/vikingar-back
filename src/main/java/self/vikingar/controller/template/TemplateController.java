@@ -28,7 +28,7 @@ public class TemplateController {
     }
 
     @PutMapping
-    public ApiResult<?> insert(@RequestParam("file") MultipartFile file,
+    public ApiResult<String> insert(@RequestParam("file") MultipartFile file,
                                     @RequestParam(value = "templateName", defaultValue = "") String templateName,
                                     @RequestParam(value = "description", defaultValue = "") String description,
                                     @RequestParam(value = "isDefault", defaultValue = "false") boolean isDefault
@@ -44,12 +44,12 @@ public class TemplateController {
     }
 
     @DeleteMapping
-    public ApiResult<?> delete(@RequestBody TemplateVo templateVo) {
+    public ApiResult<String> delete(@RequestBody TemplateVo templateVo) {
         return templateService.delete(templateVo) ? ApiResult.success() : ApiResult.fail();
     }
 
     @PostMapping
-    public ApiResult<?> update(@RequestBody TemplateVo templateVo) {
+    public ApiResult<String> update(@RequestBody TemplateVo templateVo) {
         return templateService.update(templateVo) ? ApiResult.success() : ApiResult.fail();
     }
 
