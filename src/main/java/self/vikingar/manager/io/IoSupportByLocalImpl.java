@@ -49,7 +49,7 @@ public class IoSupportByLocalImpl implements IoSupport, IoDefaultPathSupport {
         File file = new File(this.path);
         if (!file.exists()) {
             boolean mkdirs = file.mkdirs();
-            if (mkdirs) {
+            if (!mkdirs) {
                 throw CommonException.newException("路径创建失败");
             }
         }

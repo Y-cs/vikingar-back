@@ -68,9 +68,8 @@ public class SourceServiceImpl implements SourceService {
         String[] splitName = fileName.split("\\.");
         //这里 不加文件名的选择是因为文件名不同但文件内容相同应该算作同一个文件
         if (splitName.length > 1) {
-            result.append(".");
             for (int i = 1; i < splitName.length; i++) {
-                result.append(splitName[i]);
+                result.append(".").append(splitName[i]);
             }
         }
         return result.toString();

@@ -17,6 +17,7 @@ public interface TemplateService {
 
     /**
      * 上传模板
+     *
      * @param file
      * @param templateName
      * @param description
@@ -28,12 +29,30 @@ public interface TemplateService {
 
     /**
      * 分页
+     *
      * @param templatePagingVo
      * @return
      */
     List<TemplateDto> paging(TemplatePagingVo templatePagingVo);
 
+    /**
+     * 删除
+     *
+     * @param templateVo
+     * @return
+     */
     boolean delete(TemplateVo templateVo);
 
+    /**
+     * 更新
+     *
+     * @param id
+     * @param file
+     * @param templateName
+     * @param description
+     * @param isDefault
+     * @return
+     * @throws IOException
+     */
     boolean update(Long id, MultipartFile file, String templateName, String description, boolean isDefault) throws IOException;
 }
