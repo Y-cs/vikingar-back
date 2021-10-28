@@ -2,4 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="self.vikingar.mapper.source.FileSourceMapper">
 
+    <select id="checkFile" resultType="java.lang.Long">
+        select id
+        from file_source
+        where file_name = #{name}
+          and valid = 1
+    </select>
 </mapper>

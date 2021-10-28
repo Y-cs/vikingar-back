@@ -35,5 +35,5 @@ public interface TemplateService {
 
     boolean delete(TemplateVo templateVo);
 
-    boolean update(TemplateVo templateVo);
+    boolean update(Long id, MultipartFile file, String templateName, String description, boolean isDefault) throws IOException;
 }

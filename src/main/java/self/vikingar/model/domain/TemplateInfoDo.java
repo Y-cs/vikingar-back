@@ -1,8 +1,10 @@
 package self.vikingar.model.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import self.vikingar.model.base.BaseModel;
 
@@ -15,6 +17,8 @@ import self.vikingar.model.base.BaseModel;
 @Data
 @TableName("template_info")
 @Accessors(chain = true)
+@AllArgsConstructor
+@NoArgsConstructor
 public class TemplateInfoDo extends BaseModel {
 
     /**

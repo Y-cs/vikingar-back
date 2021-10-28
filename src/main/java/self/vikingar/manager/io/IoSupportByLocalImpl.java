@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import self.vikingar.config.SpringApplication;
 import self.vikingar.config.configuration.ApplicationConfig;
 import self.vikingar.config.exception.CommonException;
-import self.vikingar.model.domain.FileSourceDo;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -23,6 +22,7 @@ public class IoSupportByLocalImpl implements IoSupport, IoDefaultPathSupport {
     private static final String SEPARATOR = "/";
     private String path;
 
+    @Override
     public void init() {
         //默认在source目录下
         path = SpringApplication.getContext().getBean(ApplicationConfig.class).getFileBase();
@@ -30,6 +30,15 @@ public class IoSupportByLocalImpl implements IoSupport, IoDefaultPathSupport {
             path = this.defaultPath();
         }
         path = this.inspect(path);
+    }
+
+    @Override
+    public void close() {
+
+    }
+
+    @Override
+    public void clear() {
     }
 
     @Override
@@ -47,7 +56,7 @@ public class IoSupportByLocalImpl implements IoSupport, IoDefaultPathSupport {
     }
 
     @Override
-    public long saveFile(String name, InputStream inputStream, long size, boolean cover) throws IOException {
+    public String saveFile(String name, InputStream inputStream, long size, boolean cover) throws IOException {
         File file = new File(this.path + name);
         /**
          * 覆盖  ||  不存在  ||  是文件夹
@@ -61,16 +70,8 @@ public class IoSupportByLocalImpl implements IoSupport, IoDefaultPathSupport {
                 }
                 outputStream.flush();
             }
-            //保存到库
-            String[] fileNameSplit = name.split("\\.");
-            FileSourceDo fileSourceDo = new FileSourceDo();
-            saveInfo(fileSourceDo
-                    .setFileName(name).setFilePath(this.path + name)
-                    .setFileType(fileNameSplit.length > 1 ? fileNameSplit[1] : "")
-                    .setFileSize(size));
-            return fileSourceDo.getId();
         }
-        return 0;
+        return this.path + name;
     }
 
     private String inspect(@Nonnull String name) {

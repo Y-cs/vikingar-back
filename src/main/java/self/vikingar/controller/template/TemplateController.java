@@ -49,8 +49,12 @@ public class TemplateController {
     }
 
     @PostMapping
-    public ApiResult<String> update(@RequestBody TemplateVo templateVo) {
-        return templateService.update(templateVo) ? ApiResult.success() : ApiResult.fail();
+    public ApiResult<String> update(@RequestParam("file") MultipartFile file,
+                                    @RequestParam("id") Long id,
+                                    @RequestParam(value = "templateName", defaultValue = "") String templateName,
+                                    @RequestParam(value = "description", defaultValue = "") String description,
+                                    @RequestParam(value = "isDefault", defaultValue = "false") boolean isDefault) throws IOException {
+        return templateService.update(id,file, templateName, description, isDefault) ? ApiResult.success() : ApiResult.fail();
     }
 
 }

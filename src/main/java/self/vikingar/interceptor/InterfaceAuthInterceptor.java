@@ -28,7 +28,7 @@ public class InterfaceAuthInterceptor implements HandlerInterceptor {
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             if (((HandlerMethod) handler).getBeanType().getAnnotation(NoLoginRequired.class) == null
-                    || handlerMethod.getMethod().getAnnotation(NoLoginRequired.class) == null) {
+                    && handlerMethod.getMethod().getAnnotation(NoLoginRequired.class) == null) {
                 //没有标注跳过的接口
                 //获取token
                 String token = request.getHeader(GlobalConstant.TOKEN.getConstant2String());

@@ -1,6 +1,7 @@
 package self.vikingar.model.base;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 import self.vikingar.manager.account.AccountContextFactory;
 import self.vikingar.model.dto.account.AccountInfo;
 
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
  * @Description:
  **/
 @Data
+@Accessors(chain = true)
 public class BaseModel {
 
     /**

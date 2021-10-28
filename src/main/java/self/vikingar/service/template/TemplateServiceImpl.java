@@ -5,20 +5,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import self.vikingar.manager.io.IoSupport;
-import self.vikingar.manager.io.IoSupportFactory;
+import self.vikingar.config.exception.CommonException;
 import self.vikingar.mapper.source.TemplateInfoMapper;
 import self.vikingar.model.domain.TemplateInfoDo;
 import self.vikingar.model.dto.template.TemplateDto;
 import self.vikingar.model.vo.template.TemplatePagingVo;
 import self.vikingar.model.vo.template.TemplateVo;
+import self.vikingar.service.source.SourceService;
 import self.vikingar.util.AssemblyFactory;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * @Author: YuanChangShuai
@@ -30,31 +28,30 @@ import java.util.UUID;
 public class TemplateServiceImpl implements TemplateService {
 
     private static final String FILE_BASE = "template";
-    private final IoSupport ioSupport;
     private final TemplateInfoMapper templateInfoMapper;
+    private final SourceService sourceService;
 
-    public TemplateServiceImpl(TemplateInfoMapper templateInfoMapper) {
+    public TemplateServiceImpl(TemplateInfoMapper templateInfoMapper, SourceService sourceService) {
         this.templateInfoMapper = templateInfoMapper;
-        ioSupport = IoSupportFactory.getInstance();
+        this.sourceService = sourceService;
     }
 
     @Override
     public boolean insert(MultipartFile file, String templateName, String description, boolean isDefault) throws IOException {
-        String originalFilename = file.getOriginalFilename();
-        long sourceId = this.saveFile(file.getInputStream(), file.getSize());
+        String originalFilename = Objects.requireNonNull(file.getOriginalFilename());
+        long sourceId = sourceService.saveFile(FILE_BASE, originalFilename, file.getInputStream(), file.getSize(), true);
         if (isDefault) {
             templateInfoMapper.clearDefault();
         }
         if (StringUtils.isBlank(templateName)) {
-            templateName = Objects.requireNonNull(originalFilename).split("\\.")[0];
+            templateName = originalFilename.split("\\.")[0];
         }
-        templateInfoMapper.insert(new TemplateInfoDo()
+        return templateInfoMapper.insert(new TemplateInfoDo()
                 .setTemplateName(templateName)
                 .setDescription(description)
                 .setSourceId(sourceId)
                 .setDefault(isDefault)
-        );
-        return true;
+        ) > 0;
     }
 
     @Override
@@ -70,14 +67,25 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
-    public boolean update(TemplateVo templateVo) {
-        TemplateInfoDo templateInfoDo = AssemblyFactory.defaultAssembling(templateVo, TemplateInfoDo.class);
+    public boolean update(Long id, MultipartFile file, String templateName, String description, boolean isDefault) throws IOException {
+        TemplateInfoDo templateInfoDo = templateInfoMapper.selectById(id);
+        if (templateInfoDo == null) {
+            throw new CommonException("模板不存在");
+        }
+        String originalFilename = Objects.requireNonNull(file.getOriginalFilename());
+        long sourceId = sourceService.saveFile(FILE_BASE, originalFilename, file.getInputStream(), file.getSize(), true);
+        if (isDefault) {
+            templateInfoMapper.clearDefault();
+        }
+        if (StringUtils.isBlank(templateName)) {
+            templateName = originalFilename.split("\\.")[0];
+        }
         templateInfoDo.isUpdate();
-        return templateInfoMapper.updateById(templateInfoDo) > 0;
+        return templateInfoMapper.updateById(templateInfoDo
+                .setTemplateName(templateName)
+                .setSourceId(sourceId)
+                .setDescription(description)
+                .setDefault(isDefault)) > 0;
     }
 
-    private long saveFile(InputStream inputStream, long size) throws IOException {
-        ioSupport.setFolderName(FILE_BASE);
-        return ioSupport.saveFile(UUID.randomUUID().toString().replace("-", ""), inputStream, size, true);
-    }
 }
