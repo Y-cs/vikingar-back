@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import self.vikingar.ano.NoLoginRequired;
 import self.vikingar.config.exception.NoLoginException;
 import self.vikingar.manager.GlobalConstant;
+import self.vikingar.manager.account.AccountContextFactory;
 import self.vikingar.manager.session.SessionSupport;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +37,9 @@ public class InterfaceAuthInterceptor implements HandlerInterceptor {
             throw new NoLoginException();
         }
         SessionSupport.putToken4Session(token);
+        if (AccountContextFactory.getInstance().getAccount()==null) {
+            throw new NoLoginException();
+        }
         return true;
     }
 

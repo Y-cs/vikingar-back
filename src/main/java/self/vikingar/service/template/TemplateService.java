@@ -1,8 +1,12 @@
 package self.vikingar.service.template;
 
 import org.springframework.web.multipart.MultipartFile;
+import self.vikingar.model.dto.template.TemplateDto;
+import self.vikingar.model.vo.template.TemplatePagingVo;
+import self.vikingar.model.vo.template.TemplateVo;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @Author: YuanChangShuai
@@ -20,6 +24,16 @@ public interface TemplateService {
      * @return
      * @throws IOException
      */
-    boolean updateTemplate(MultipartFile file, String templateName, String description, boolean isDefault) throws IOException;
+    boolean insert(MultipartFile file, String templateName, String description, boolean isDefault) throws IOException;
 
+    /**
+     * 分页
+     * @param templatePagingVo
+     * @return
+     */
+    List<TemplateDto> paging(TemplatePagingVo templatePagingVo);
+
+    boolean delete(TemplateVo templateVo);
+
+    boolean update(TemplateVo templateVo);
 }

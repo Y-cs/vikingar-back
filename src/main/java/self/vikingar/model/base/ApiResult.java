@@ -21,6 +21,11 @@ public class ApiResult<T> {
         this.code = code;
     }
 
+    public ApiResult(T t) {
+        this.data = t;
+        this.code = OK;
+    }
+
     public static ApiResult<String> success() {
         return new ApiResult<>("成功", OK);
     }

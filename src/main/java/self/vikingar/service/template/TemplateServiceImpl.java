@@ -1,5 +1,6 @@
 package self.vikingar.service.template;
 
+import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -8,9 +9,14 @@ import self.vikingar.manager.io.IoSupport;
 import self.vikingar.manager.io.IoSupportFactory;
 import self.vikingar.mapper.source.TemplateInfoMapper;
 import self.vikingar.model.domain.TemplateInfoDo;
+import self.vikingar.model.dto.template.TemplateDto;
+import self.vikingar.model.vo.template.TemplatePagingVo;
+import self.vikingar.model.vo.template.TemplateVo;
+import self.vikingar.util.AssemblyFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -32,7 +38,7 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
-    public boolean updateTemplate(MultipartFile file, String templateName, String description, boolean isDefault) throws IOException {
+    public boolean insert(MultipartFile file, String templateName, String description, boolean isDefault) throws IOException {
         String originalFilename = file.getOriginalFilename();
         long sourceId = this.saveFile(originalFilename, file.getInputStream(), file.getSize());
         if (isDefault) {
@@ -48,6 +54,25 @@ public class TemplateServiceImpl implements TemplateService {
                 .setDefault(isDefault)
         );
         return true;
+    }
+
+    @Override
+    public List<TemplateDto> paging(TemplatePagingVo templatePagingVo) {
+        PageHelper.startPage(templatePagingVo.getPageIndex(), templatePagingVo.getPageSize());
+        List<TemplateInfoDo> templateInfoDos = templateInfoMapper.selectList(null);
+        return AssemblyFactory.listAssembling(templateInfoDos, TemplateDto.class);
+    }
+
+    @Override
+    public boolean delete(TemplateVo templateVo) {
+        return templateInfoMapper.deleteById(templateVo.getId()) > 0;
+    }
+
+    @Override
+    public boolean update(TemplateVo templateVo) {
+        TemplateInfoDo templateInfoDo = AssemblyFactory.defaultAssembling(templateVo, TemplateInfoDo.class);
+        templateInfoDo.isUpdate();
+        return templateInfoMapper.updateById(templateInfoDo) > 0;
     }
 
     private long saveFile(String name, InputStream inputStream, long size) throws IOException {

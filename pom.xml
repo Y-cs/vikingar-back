@@ -17,8 +17,9 @@
         <sonar.projectKey>Y-cs_vikingar-back</sonar.projectKey>
         <sonar.branch.name>main</sonar.branch.name>
         <!--版本-->
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <!--包版本-->
         <spring.version>2.5.3</spring.version>
         <lombok.version>1.18.10</lombok.version>
         <guava.version>31.0.1-jre</guava.version>
@@ -32,6 +33,7 @@
         <maven-resources-plugin.verson>3.2.0</maven-resources-plugin.verson>
         <spring-boot-maven-plugin.verson>2.5.3</spring-boot-maven-plugin.verson>
         <sonar-maven-plugin.verson>3.9.0.2155</sonar-maven-plugin.verson>
+        <pagehelper.version>5.1.4</pagehelper.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -97,6 +99,11 @@
             <artifactId>annotations</artifactId>
             <version>RELEASE</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>${pagehelper.version}</version>
         </dependency>
     </dependencies>
     <build>
