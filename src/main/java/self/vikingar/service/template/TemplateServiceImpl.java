@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * @Author: YuanChangShuai
@@ -40,7 +41,7 @@ public class TemplateServiceImpl implements TemplateService {
     @Override
     public boolean insert(MultipartFile file, String templateName, String description, boolean isDefault) throws IOException {
         String originalFilename = file.getOriginalFilename();
-        long sourceId = this.saveFile(originalFilename, file.getInputStream(), file.getSize());
+        long sourceId = this.saveFile(file.getInputStream(), file.getSize());
         if (isDefault) {
             templateInfoMapper.clearDefault();
         }
@@ -75,8 +76,8 @@ public class TemplateServiceImpl implements TemplateService {
         return templateInfoMapper.updateById(templateInfoDo) > 0;
     }
 
-    private long saveFile(String name, InputStream inputStream, long size) throws IOException {
+    private long saveFile(InputStream inputStream, long size) throws IOException {
         ioSupport.setFolderName(FILE_BASE);
-        return ioSupport.saveFile(name, inputStream, size, true);
+        return ioSupport.saveFile(UUID.randomUUID().toString().replace("-", ""), inputStream, size, true);
     }
 }

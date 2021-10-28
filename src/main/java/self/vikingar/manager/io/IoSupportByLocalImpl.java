@@ -53,13 +53,13 @@ public class IoSupportByLocalImpl implements IoSupport {
         //覆盖  ||  不存在  ||  是文件夹
         if (cover || !file.exists() || file.isDirectory()) {
             //输出文件
-            FileOutputStream outputStream = new FileOutputStream(file);
-            byte[] bytes = new byte[10240];
-            while (inputStream.read(bytes) != -1) {
-                outputStream.write(bytes);
+            try (FileOutputStream outputStream = new FileOutputStream(file)) {
+                byte[] bytes = new byte[10240];
+                while (inputStream.read(bytes) != -1) {
+                    outputStream.write(bytes);
+                }
+                outputStream.flush();
             }
-            outputStream.flush();
-            outputStream.close();
             //保存到库
             String[] fileNameSplit = name.split("\\.");
             FileSourceDo fileSourceDo = new FileSourceDo();
