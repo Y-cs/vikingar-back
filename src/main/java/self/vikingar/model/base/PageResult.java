@@ -1,6 +1,7 @@
 package self.vikingar.model.base;
 
 import com.github.pagehelper.PageInfo;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  * @Description:
  **/
 @Getter
+@EqualsAndHashCode(callSuper = true)
 public class PageResult<T> extends ApiResult<List<T>>{
 
     /**

@@ -13,6 +13,8 @@ import java.util.List;
  **/
 public class AssemblyFactory {
 
+    private AssemblyFactory(){}
+
     public static <A, B> B assembling(A a, Class<B> clazz, AssemblyProcess<A, B> process) {
         B b = BeanUtils.instantiateClass(clazz);
         process.assembly(a, b);

@@ -9,6 +9,8 @@ import java.util.UUID;
  **/
 public class TokenCreator {
 
+    private TokenCreator(){}
+
     public static String create() {
         return UUID.randomUUID().toString().replace("-", "");
     }

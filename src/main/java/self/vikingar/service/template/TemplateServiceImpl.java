@@ -1,6 +1,6 @@
 package self.vikingar.service.template;
 
-import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.page.PageMethod;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -59,7 +59,7 @@ public class TemplateServiceImpl implements TemplateService {
 
     @Override
     public List<TemplateDto> paging(TemplatePagingVo templatePagingVo) {
-        PageHelper.startPage(templatePagingVo.getPageIndex(), templatePagingVo.getPageSize());
+        PageMethod.startPage(templatePagingVo.getPageIndex(), templatePagingVo.getPageSize());
         List<TemplateInfoDo> templateInfoDos = templateInfoMapper.selectList(null);
         return AssemblyFactory.listAssembling(templateInfoDos, TemplateDto.class);
     }

@@ -10,6 +10,8 @@ import self.vikingar.manager.thread.ThreadContextFactory;
  **/
 public class SessionSupport {
 
+    private SessionSupport(){}
+
     /**
      * 获取当前线程token
      *

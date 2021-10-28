@@ -27,18 +27,22 @@ public class InterfaceAuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
-            if (((HandlerMethod) handler).getBeanType().getAnnotation(NoLoginRequired.class) != null
-                    || handlerMethod.getMethod().getAnnotation(NoLoginRequired.class) != null) {
-                return true;
+            if (((HandlerMethod) handler).getBeanType().getAnnotation(NoLoginRequired.class) == null
+                    || handlerMethod.getMethod().getAnnotation(NoLoginRequired.class) == null) {
+                //没有标注跳过的接口
+                //获取token
+                String token = request.getHeader(GlobalConstant.TOKEN.getConstant2String());
+                if (StringUtils.isBlank(token)) {
+                    //token为null
+                    throw new NoLoginException();
+                }
+                //填入token
+                SessionSupport.putToken4Session(token);
+                if (AccountContextFactory.getInstance().getAccount() == null) {
+                    //没有获取到用户数据
+                    throw new NoLoginException();
+                }
             }
-        }
-        String token = request.getHeader(GlobalConstant.TOKEN.getConstant2String());
-        if (StringUtils.isBlank(token)) {
-            throw new NoLoginException();
-        }
-        SessionSupport.putToken4Session(token);
-        if (AccountContextFactory.getInstance().getAccount()==null) {
-            throw new NoLoginException();
         }
         return true;
     }
@@ -52,5 +56,6 @@ public class InterfaceAuthInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
                                 @Nullable Exception ex) throws Exception {
+        HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
     }
 }

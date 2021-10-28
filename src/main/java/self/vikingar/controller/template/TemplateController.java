@@ -28,7 +28,7 @@ public class TemplateController {
     }
 
     @PutMapping
-    public ApiResult<String> insert(@RequestParam("file") MultipartFile file,
+    public ApiResult<?> insert(@RequestParam("file") MultipartFile file,
                                     @RequestParam(value = "templateName", defaultValue = "") String templateName,
                                     @RequestParam(value = "description", defaultValue = "") String description,
                                     @RequestParam(value = "isDefault", defaultValue = "false") boolean isDefault

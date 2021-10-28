@@ -26,23 +26,23 @@ public class ApiResult<T> {
         this.code = OK;
     }
 
-    public static ApiResult<String> success() {
+    public static ApiResult<?> success() {
         return new ApiResult<>("成功", OK);
     }
 
     public static <T> ApiResult<T> success(T t) {
-        return new ApiResult<T>(t, OK);
+        return new ApiResult<>(t, OK);
     }
 
-    public static ApiResult<String> fail() {
+    public static ApiResult<?> fail() {
         return new ApiResult<>("有点问题啊", FAIL);
     }
 
-    public static ApiResult<String> fail(String err) {
+    public static ApiResult<?> fail(String err) {
         return new ApiResult<>(err, FAIL);
     }
 
-    public static ApiResult<String> fail(RuntimeException runtimeException) {
+    public static ApiResult<?> fail(RuntimeException runtimeException) {
         return new ApiResult<>(runtimeException.getMessage(), FAIL);
     }
 

@@ -1,10 +1,9 @@
 package self.vikingar.manager.io;
 
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.ResourceUtils;
 import self.vikingar.config.SpringApplication;
 import self.vikingar.config.configuration.ApplicationConfig;
+import self.vikingar.config.exception.CommonException;
 import self.vikingar.model.domain.FileSourceDo;
 
 import javax.annotation.Nonnull;
@@ -19,13 +18,10 @@ import java.io.InputStream;
  * @Description:
  **/
 @Slf4j
-public class IoSupportByLocalImpl implements IoSupport {
+public class IoSupportByLocalImpl implements IoSupport, IoDefaultPathSupport {
 
     private static final String SEPARATOR = "/";
     private String path;
-
-    public IoSupportByLocalImpl() {
-    }
 
     public void init() {
         //默认在source目录下
@@ -44,13 +40,18 @@ public class IoSupportByLocalImpl implements IoSupport {
         File file = new File(this.path);
         if (!file.exists()) {
             boolean mkdirs = file.mkdirs();
+            if (mkdirs) {
+                throw CommonException.newException("路径创建失败");
+            }
         }
     }
 
     @Override
     public long saveFile(String name, InputStream inputStream, long size, boolean cover) throws IOException {
         File file = new File(this.path + name);
-        //覆盖  ||  不存在  ||  是文件夹
+        /**
+         * 覆盖  ||  不存在  ||  是文件夹
+         */
         if (cover || !file.exists() || file.isDirectory()) {
             //输出文件
             try (FileOutputStream outputStream = new FileOutputStream(file)) {
@@ -70,11 +71,6 @@ public class IoSupportByLocalImpl implements IoSupport {
             return fileSourceDo.getId();
         }
         return 0;
-    }
-
-    @SneakyThrows
-    private String defaultPath() {
-        return ResourceUtils.getURL("classpath:").getPath();
     }
 
     private String inspect(@Nonnull String name) {
