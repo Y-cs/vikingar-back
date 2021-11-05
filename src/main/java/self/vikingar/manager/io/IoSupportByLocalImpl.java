@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import self.vikingar.config.SpringApplication;
 import self.vikingar.config.configuration.ApplicationConfig;
 import self.vikingar.config.exception.CommonException;
+import self.vikingar.util.PathUtil;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -19,7 +20,6 @@ import java.io.InputStream;
 @Slf4j
 public class IoSupportByLocalImpl implements IoSupport, IoDefaultPathSupport {
 
-    private static final String SEPARATOR = "/";
     private String path;
 
     @Override
@@ -29,7 +29,7 @@ public class IoSupportByLocalImpl implements IoSupport, IoDefaultPathSupport {
         if (path == null || path.length() == 0) {
             path = this.defaultPath();
         }
-        path = this.inspect(path);
+        path = PathUtil.inspect(path);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class IoSupportByLocalImpl implements IoSupport, IoDefaultPathSupport {
     public void setFolderName(@Nonnull String name) {
         this.init();
         //处理间隔符问题
-        path = path + this.inspect(name);
+        path = path + PathUtil.inspect(name);
         File file = new File(this.path);
         if (!file.exists()) {
             boolean mkdirs = file.mkdirs();
@@ -74,11 +74,4 @@ public class IoSupportByLocalImpl implements IoSupport, IoDefaultPathSupport {
         return this.path + name;
     }
 
-    private String inspect(@Nonnull String name) {
-        name = name.replace("\\", "/");
-        if (!name.endsWith(SEPARATOR)) {
-            name += "/";
-        }
-        return name;
-    }
 }

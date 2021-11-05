@@ -4,6 +4,11 @@ spring:
   task:
     execution:
       thread-name-prefix: spring-thread-
+  web:
+    resources:
+      static-locations: classpath:/static/
+  mvc:
+    static-path-pattern: /static/**
   datasource:
     hikari:
       minimum-idle: 3
@@ -24,6 +29,7 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
   mapper-locations: classpath:self/vikingar/mapper/xml/*.xml
+  type-enums-package: self.vikingar.model.enumType
 server:
   servlet:
     context-path: /api

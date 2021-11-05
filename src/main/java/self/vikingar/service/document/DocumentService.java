@@ -8,5 +8,9 @@ import self.vikingar.model.vo.document.DocumentVo;
  * @Description:
  **/
 public interface DocumentService {
+    /**
+     * 添加文档
+     * @param documentVo
+     */
     void addDocument(DocumentVo documentVo);
 }

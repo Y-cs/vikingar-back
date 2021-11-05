@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResult.fail(e.getMessage()));
     }
 
-    @ExceptionHandler(value = RuntimeException.class)
+    @ExceptionHandler(value = {Exception.class, RuntimeException.class})
     public ResponseEntity<ApiResult<String>> runtimeExceptionHandle(CommonException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResult.fail(e.getMessage()));
     }

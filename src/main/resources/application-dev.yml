@@ -6,4 +6,4 @@ spring:
     password: ycs@1996515
 application:
   config:
-    file-base: D:\Self\vikingar\vikingar-back\file
+    file-base: file

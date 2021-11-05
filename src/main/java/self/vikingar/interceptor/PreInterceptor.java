@@ -40,7 +40,6 @@ public class PreInterceptor implements HandlerInterceptor {
             response.setStatus(HttpStatus.NO_CONTENT.value());
             return false;
         }
-        SessionSupport.clear();
         return true;
     }
 
