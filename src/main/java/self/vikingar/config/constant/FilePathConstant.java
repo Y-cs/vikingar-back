@@ -10,9 +10,9 @@ public enum FilePathConstant {
     /**
      * 模板
      */
-    TEMPLATE("template"),
+    TEMPLATE("template/"),
 
-    HTML_SOURCE("html_source"),
+    HTML_SOURCE("html_source/"),
 
 
     ;

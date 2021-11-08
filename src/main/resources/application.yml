@@ -6,7 +6,7 @@ spring:
       thread-name-prefix: spring-thread-
   web:
     resources:
-      static-locations: classpath:/static/
+      static-locations: classpath:/static
   mvc:
     static-path-pattern: /static/**
   datasource:
@@ -31,8 +31,6 @@ mybatis-plus:
   mapper-locations: classpath:self/vikingar/mapper/xml/*.xml
   type-enums-package: self.vikingar.model.enumType
 server:
-  servlet:
-    context-path: /api
   tomcat:
     threads:
       min-spare: 5

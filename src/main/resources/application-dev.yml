@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    url: jdbc:p6spy:mysql://118.24.126.49:3306/vikingar?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false
-    username: root
-    password: ycs@1996515
+    url: jdbc:p6spy:mysql://${db-url}
+    username: ${db-username}
+    password: ${db-password}
 application:
   config:
     file-base: file

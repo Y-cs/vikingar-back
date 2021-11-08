@@ -1,6 +1,5 @@
 # 环境
-application-dev.yml
-application-prod.yml
+file/**
 ### Java template
 # Compiled class file
 *.class
