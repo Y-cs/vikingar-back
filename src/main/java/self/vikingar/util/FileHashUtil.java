@@ -52,7 +52,6 @@ public enum FileHashUtil {
             }
             return DatatypeConverter.printHexBinary(digest.digest());
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
