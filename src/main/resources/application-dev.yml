@@ -6,4 +6,5 @@ spring:
     password: ${db-password}
 application:
   config:
+    web-domain: http://127.0.0.1:9605
     file-base: file

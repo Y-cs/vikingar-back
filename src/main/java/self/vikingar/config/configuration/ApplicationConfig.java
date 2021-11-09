@@ -17,6 +17,8 @@ public class ApplicationConfig {
 
     private String fileBase;
 
+    private String webDomain;
+
     public String getFileBase() {
         return fileBase == null ? "" : PathUtil.inspect(fileBase);
     }

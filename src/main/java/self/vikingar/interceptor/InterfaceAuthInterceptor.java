@@ -8,7 +8,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import self.vikingar.ano.NoLoginRequired;
 import self.vikingar.config.exception.NoLoginException;
-import self.vikingar.manager.GlobalConstant;
+import self.vikingar.config.constant.GlobalConstant;
 import self.vikingar.manager.account.AccountContextFactory;
 import self.vikingar.manager.session.SessionSupport;
 

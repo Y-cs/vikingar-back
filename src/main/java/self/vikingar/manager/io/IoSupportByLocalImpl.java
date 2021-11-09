@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import self.vikingar.config.SpringApplication;
 import self.vikingar.config.configuration.ApplicationConfig;
 import self.vikingar.config.exception.CommonException;
+import self.vikingar.model.enumType.FileSourceEnum;
 import self.vikingar.util.PathUtil;
 
 import javax.annotation.Nonnull;
@@ -56,6 +57,11 @@ public class IoSupportByLocalImpl implements IoSupport, IoDefaultPathSupport {
     }
 
     @Override
+    public FileSourceEnum getFileSource() {
+        return FileSourceEnum.LOCATION;
+    }
+
+    @Override
     public String saveFile(String name, InputStream inputStream, long size, boolean cover) throws IOException {
         File file = new File(this.path + name);
         /**
@@ -71,7 +77,7 @@ public class IoSupportByLocalImpl implements IoSupport, IoDefaultPathSupport {
                 outputStream.flush();
             }
         }
-        return this.path + name;
+        return file.getCanonicalPath();
     }
 
 }

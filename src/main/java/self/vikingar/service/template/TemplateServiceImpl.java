@@ -4,14 +4,14 @@ import com.github.pagehelper.page.PageMethod;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import self.vikingar.config.constant.FilePathConstant;
 import self.vikingar.config.exception.CommonException;
 import self.vikingar.mapper.source.TemplateInfoMapper;
+import self.vikingar.model.domain.FileSourceDo;
 import self.vikingar.model.domain.TemplateInfoDo;
 import self.vikingar.model.dto.template.TemplateDto;
+import self.vikingar.model.dto.template.TemplateSaveOrUpdateDto;
 import self.vikingar.model.vo.template.TemplatePagingVo;
-import self.vikingar.model.vo.template.TemplateVo;
 import self.vikingar.service.source.SourceService;
 import self.vikingar.util.AssemblyFactory;
 
@@ -37,26 +37,26 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
-    public boolean insert(MultipartFile file, String templateName, String description, boolean isDefault) throws IOException {
-        String originalFilename = Objects.requireNonNull(file.getOriginalFilename());
-        long sourceId = sourceService.saveFile(FilePathConstant.TEMPLATE.getPath(), originalFilename, file.getInputStream(), file.getSize(), true);
-        if (isDefault) {
+    public boolean insert(TemplateSaveOrUpdateDto dto) throws IOException {
+        String originalFilename = Objects.requireNonNull(dto.getOriginalFilename());
+        FileSourceDo fileSourceDo = sourceService.saveFile(FilePathConstant.TEMPLATE, originalFilename, dto.getInputStream(), dto.getSize(), true);
+        if (dto.isDefault()) {
             templateInfoMapper.clearDefault();
         }
-        if (StringUtils.isBlank(templateName)) {
-            StringBuilder templateNameBuilder = new StringBuilder(templateName);
+        if (StringUtils.isBlank(dto.getTemplateName())) {
+            StringBuilder templateNameBuilder = new StringBuilder(dto.getTemplateName());
             String[] splitName = originalFilename.split("\\.");
             for (int i = 0; i < splitName.length - 1; i++) {
                 templateNameBuilder.append(".").append(splitName[i]);
             }
             templateNameBuilder.deleteCharAt(0);
-            templateName = templateNameBuilder.toString();
+            dto.setTemplateName(templateNameBuilder.toString());
         }
         return templateInfoMapper.insert(new TemplateInfoDo()
-                .setTemplateName(templateName)
-                .setDescription(description)
-                .setSourceId(sourceId)
-                .setDefault(isDefault)
+                .setTemplateName(dto.getTemplateName())
+                .setDescription(dto.getDescription())
+                .setSourceId(fileSourceDo.getId())
+                .setDefault(dto.isDefault())
         ) > 0;
     }
 
@@ -68,30 +68,30 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
-    public boolean delete(TemplateVo templateVo) {
-        return templateInfoMapper.deleteById(templateVo.getId()) > 0;
+    public boolean delete(Long id) {
+        return templateInfoMapper.deleteById(id) > 0;
     }
 
     @Override
-    public boolean update(Long id, MultipartFile file, String templateName, String description, boolean isDefault) throws IOException {
-        TemplateInfoDo templateInfoDo = templateInfoMapper.selectById(id);
+    public boolean update(TemplateSaveOrUpdateDto dto) throws IOException {
+        TemplateInfoDo templateInfoDo = templateInfoMapper.selectById(dto.getId());
         if (templateInfoDo == null) {
             throw new CommonException("模板不存在");
         }
-        String originalFilename = Objects.requireNonNull(file.getOriginalFilename());
-        long sourceId = sourceService.saveFile(FilePathConstant.TEMPLATE.getPath(), originalFilename, file.getInputStream(), file.getSize(), true);
-        if (isDefault) {
+        String originalFilename = Objects.requireNonNull(dto.getOriginalFilename());
+        FileSourceDo fileSourceDo = sourceService.saveFile(FilePathConstant.TEMPLATE, originalFilename, dto.getInputStream(), dto.getSize(), true);
+        if (dto.isDefault()) {
             templateInfoMapper.clearDefault();
         }
-        if (StringUtils.isBlank(templateName)) {
-            templateName = originalFilename.split("\\.")[0];
+        if (StringUtils.isBlank(dto.getTemplateName())) {
+            dto.setTemplateName(originalFilename.split("\\.")[0]);
         }
         templateInfoDo.isUpdate();
         return templateInfoMapper.updateById(templateInfoDo
-                .setTemplateName(templateName)
-                .setSourceId(sourceId)
-                .setDescription(description)
-                .setDefault(isDefault)) > 0;
+                .setTemplateName(dto.getTemplateName())
+                .setSourceId(fileSourceDo.getId())
+                .setDescription(dto.getDescription())
+                .setDefault(dto.isDefault())) > 0;
     }
 
 }

@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import self.vikingar.config.configuration.ApplicationConfig;
-import self.vikingar.config.constant.FilePathConstant;
+import self.vikingar.config.constant.GlobalConstant;
 import self.vikingar.interceptor.InterfaceAuthInterceptor;
 import self.vikingar.interceptor.PreInterceptor;
 
@@ -23,13 +23,10 @@ import java.util.stream.Stream;
 @ConditionalOnClass(ApplicationConfig.class)
 public class WebConfig extends WebMvcConfigurationSupport {
     /**
-     * spring设计这个类的存在把关于webmvc的所有配置都拢到了一起 但感觉= =  很不方便和灵活
-     * 继承这个类会导致mvc的默认配置被覆盖,静态资源路径无法访问
+     * 不拦截配置
      */
-    private static final String[] HTML_SOURCES = {"/css/**", "/js/**", "/html/**", "/image/**"};
-
-    private static final String[] SOURCES_PATH = {"/static/**", "/webjars/**", "/resources/**"};
-
+    private static final String[] HTML_SOURCES = {"**.js", "**.css", "**.html", "**.htm", "/error"};
+    private static final String[] SOURCES_PATH = {"/static/**", "/webjars/**", "/resources/**", "/favicon.ico"};
     private static final String[] NOT_INTERCEPT_RESOURCES =
             Stream.concat(Stream.of(HTML_SOURCES), Stream.of(SOURCES_PATH)).toArray(String[]::new);
 
@@ -41,15 +38,15 @@ public class WebConfig extends WebMvcConfigurationSupport {
 
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
-        /**
-         * 拦截全部 前置处理
+        /*
+          拦截全部 前置处理
          */
         InterceptorRegistration perInterceptor = registry.addInterceptor(new PreInterceptor());
         perInterceptor.excludePathPatterns(NOT_INTERCEPT_RESOURCES);
         perInterceptor.addPathPatterns("/**");
 
-        /**
-         * 权限拦截
+        /*
+          权限拦截
          */
         InterceptorRegistration authInterceptor = registry.addInterceptor(new InterfaceAuthInterceptor());
         authInterceptor.excludePathPatterns(NOT_INTERCEPT_RESOURCES);
@@ -58,11 +55,23 @@ public class WebConfig extends WebMvcConfigurationSupport {
 
     @Override
     protected void addResourceHandlers(@Nonnull ResourceHandlerRegistry registry) {
-        super.addResourceHandlers(registry);
+        /*
+        webjar
+         */
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
-        registry.addResourceHandler("/static/**")
-                .addResourceLocations("file:"+applicationConfig.getFileBase() + FilePathConstant.HTML_SOURCE.getPath())
+        /*
+        静态资源路径
+         */
+        registry.addResourceHandler(GlobalConstant.STATIC_RESOURCE_PATH.getConstant2String() + "**")
+                .addResourceLocations("file:" + applicationConfig.getFileBase())
+                .addResourceLocations("classpath:/META-INF/resources/")
+                .addResourceLocations("classpath:/static/");
+        /*
+        图标这个坑人的东西
+         */
+        registry.addResourceHandler("/favicon.ico")
+                .addResourceLocations("classpath:/META-INF/resources/")
                 .addResourceLocations("classpath:/static/");
     }
 }

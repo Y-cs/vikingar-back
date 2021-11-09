@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import self.vikingar.model.base.ApiResult;
 import self.vikingar.model.base.PageResult;
 import self.vikingar.model.dto.template.TemplateDto;
+import self.vikingar.model.dto.template.TemplateSaveOrUpdateDto;
 import self.vikingar.model.vo.template.TemplatePagingVo;
 import self.vikingar.model.vo.template.TemplateVo;
 import self.vikingar.service.template.TemplateService;
@@ -33,7 +34,14 @@ public class TemplateController {
                                     @RequestParam(value = "description", defaultValue = "") String description,
                                     @RequestParam(value = "isDefault", defaultValue = "false") boolean isDefault
     ) throws IOException {
-        templateService.insert(file, templateName, description, isDefault);
+        TemplateSaveOrUpdateDto fileSourceDto = new TemplateSaveOrUpdateDto();
+        fileSourceDto.setTemplateName(templateName);
+        fileSourceDto.setDescription(description);
+        fileSourceDto.setDefault(isDefault);
+        fileSourceDto.setOriginalFilename(file.getOriginalFilename());
+        fileSourceDto.setInputStream(file.getInputStream());
+        fileSourceDto.setSize(file.getSize());
+        templateService.insert(fileSourceDto);
         return ApiResult.success();
     }
 
@@ -45,7 +53,7 @@ public class TemplateController {
 
     @DeleteMapping
     public ApiResult<String> delete(@RequestBody TemplateVo templateVo) {
-        return templateService.delete(templateVo) ? ApiResult.success() : ApiResult.fail();
+        return templateService.delete(templateVo.getId()) ? ApiResult.success() : ApiResult.fail();
     }
 
     @PostMapping
@@ -54,7 +62,15 @@ public class TemplateController {
                                     @RequestParam(value = "templateName", defaultValue = "") String templateName,
                                     @RequestParam(value = "description", defaultValue = "") String description,
                                     @RequestParam(value = "isDefault", defaultValue = "false") boolean isDefault) throws IOException {
-        return templateService.update(id,file, templateName, description, isDefault) ? ApiResult.success() : ApiResult.fail();
+        TemplateSaveOrUpdateDto fileSourceDto = new TemplateSaveOrUpdateDto();
+        fileSourceDto.setId(id);
+        fileSourceDto.setTemplateName(templateName);
+        fileSourceDto.setDescription(description);
+        fileSourceDto.setDefault(isDefault);
+        fileSourceDto.setOriginalFilename(file.getOriginalFilename());
+        fileSourceDto.setInputStream(file.getInputStream());
+        fileSourceDto.setSize(file.getSize());
+        return templateService.update(fileSourceDto) ? ApiResult.success() : ApiResult.fail();
     }
 
 }

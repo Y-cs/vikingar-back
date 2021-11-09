@@ -20,7 +20,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public void addDocument(DocumentVo documentVo) {
-        //富文本
+        //富文本  如何处理图片问题 静态解决  这里添加一个图片的管理
 
     }
 }

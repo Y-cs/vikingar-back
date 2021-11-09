@@ -1,4 +1,4 @@
-package self.vikingar.manager;
+package self.vikingar.config.constant;
 
 /**
  * @Author: YuanChangShuai
@@ -15,7 +15,15 @@ public enum GlobalConstant {
     /**
      * token key by request
      */
-    TOKEN("TOKEN");
+    TOKEN("TOKEN"),
+
+    /**
+     * request
+     */
+    REQUEST("REQUEST"),
+
+    STATIC_RESOURCE_PATH("static/"),
+    ;
 
     Object constant;
 

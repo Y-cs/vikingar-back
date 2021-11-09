@@ -11,5 +11,7 @@ spring:
     password:
 application:
   config:
+    # web域名或者ip+端口,携带协议
+    web-domain:
     # 文件保存目录
     file-base:

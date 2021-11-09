@@ -1,6 +1,6 @@
 package self.vikingar.manager.session;
 
-import self.vikingar.manager.GlobalConstant;
+import self.vikingar.config.constant.GlobalConstant;
 import self.vikingar.manager.thread.ThreadContextFactory;
 
 /**
@@ -10,7 +10,8 @@ import self.vikingar.manager.thread.ThreadContextFactory;
  **/
 public class SessionSupport {
 
-    private SessionSupport(){}
+    private SessionSupport() {
+    }
 
     /**
      * 获取当前线程token
@@ -30,6 +31,9 @@ public class SessionSupport {
         ThreadContextFactory.getInstance().put(GlobalConstant.TOKEN_CACHE_KEY, token);
     }
 
+    /**
+     * 会话资源清理
+     */
     public static void clear() {
         ThreadContextFactory.getInstance().clear();
     }

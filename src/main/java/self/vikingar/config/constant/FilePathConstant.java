@@ -1,5 +1,9 @@
 package self.vikingar.config.constant;
 
+import self.vikingar.util.PathUtil;
+
+import java.time.LocalDate;
+
 /**
  * @Author: YuanChangShuai
  * @Date: 2021/11/2 14:31
@@ -11,9 +15,14 @@ public enum FilePathConstant {
      * 模板
      */
     TEMPLATE("template/"),
-
-    HTML_SOURCE("html_source/"),
-
+    /**
+     * html资源
+     */
+    HTML_SOURCE("html/"),
+    /**
+     * 媒体文件
+     */
+    MEDIA("media/"),
 
     ;
 
@@ -25,5 +34,10 @@ public enum FilePathConstant {
 
     public String getPath() {
         return path;
+    }
+
+    public String getFolder() {
+        //文件夹生成策略[folder]/yyyy/MM
+        return String.format("%s%s/%s", PathUtil.inspect(this.path), LocalDate.now().getYear(), LocalDate.now().getMonthValue());
     }
 }

@@ -1,7 +1,7 @@
 package self.vikingar.manager.thread;
 
 import lombok.extern.slf4j.Slf4j;
-import self.vikingar.manager.GlobalConstant;
+import self.vikingar.config.constant.GlobalConstant;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,8 +31,8 @@ public class DefaultThreadContext implements ThreadContext {
     }
 
     @Override
-    public void put(GlobalConstant tokenCacheKey, Object value) {
-        put(tokenCacheKey.getConstant2String(), value);
+    public void put(GlobalConstant key, Object value) {
+        put(key.getConstant2String(), value);
     }
 
     private static class ThreadContextInstance {

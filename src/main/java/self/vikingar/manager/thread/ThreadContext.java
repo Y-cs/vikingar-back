@@ -1,6 +1,6 @@
 package self.vikingar.manager.thread;
 
-import self.vikingar.manager.GlobalConstant;
+import self.vikingar.config.constant.GlobalConstant;
 
 /**
  * @Author: YuanChangShuai
@@ -9,9 +9,20 @@ import self.vikingar.manager.GlobalConstant;
  **/
 public interface ThreadContext {
 
+    /**
+     * 对常量枚举的支持
+     *
+     * @param tokenCacheKey
+     * @return
+     */
     Object get(GlobalConstant tokenCacheKey);
 
-    void put(GlobalConstant tokenCacheKey, Object value);
+    /**
+     * 对枚举的支持
+     * @param key
+     * @param value
+     */
+    void put(GlobalConstant key, Object value);
 
     /**
      * 存入

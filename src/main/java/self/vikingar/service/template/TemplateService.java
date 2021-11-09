@@ -1,9 +1,8 @@
 package self.vikingar.service.template;
 
-import org.springframework.web.multipart.MultipartFile;
 import self.vikingar.model.dto.template.TemplateDto;
+import self.vikingar.model.dto.template.TemplateSaveOrUpdateDto;
 import self.vikingar.model.vo.template.TemplatePagingVo;
-import self.vikingar.model.vo.template.TemplateVo;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,14 +17,11 @@ public interface TemplateService {
     /**
      * 上传模板
      *
-     * @param file
-     * @param templateName
-     * @param description
-     * @param isDefault
+     * @param dto
      * @return
      * @throws IOException
      */
-    boolean insert(MultipartFile file, String templateName, String description, boolean isDefault) throws IOException;
+    boolean insert(TemplateSaveOrUpdateDto dto) throws IOException;
 
     /**
      * 分页
@@ -38,21 +34,17 @@ public interface TemplateService {
     /**
      * 删除
      *
-     * @param templateVo
+     * @param id
      * @return
      */
-    boolean delete(TemplateVo templateVo);
+    boolean delete(Long id);
 
     /**
      * 更新
      *
-     * @param id
-     * @param file
-     * @param templateName
-     * @param description
-     * @param isDefault
+     * @param dto
      * @return
      * @throws IOException
      */
-    boolean update(Long id, MultipartFile file, String templateName, String description, boolean isDefault) throws IOException;
+    boolean update(TemplateSaveOrUpdateDto dto) throws IOException;
 }

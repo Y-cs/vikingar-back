@@ -4,11 +4,6 @@ spring:
   task:
     execution:
       thread-name-prefix: spring-thread-
-  web:
-    resources:
-      static-locations: classpath:/static
-  mvc:
-    static-path-pattern: /static/**
   datasource:
     hikari:
       minimum-idle: 3
@@ -19,6 +14,13 @@ spring:
       connection-timeout: 30000
       connection-test-query: select 1
     type: com.zaxxer.hikari.HikariDataSource
+  servlet:
+    multipart:
+      # 15MB
+      max-file-size: 15728640
+      max-request-size: 15728640
+  freemarker:
+    check-template-location: false
 mybatis-plus:
   global-config:
     db-config:
@@ -34,3 +36,4 @@ server:
   tomcat:
     threads:
       min-spare: 5
+  port: 9605

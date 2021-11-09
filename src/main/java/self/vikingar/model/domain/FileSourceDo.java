@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import self.vikingar.config.exception.CommonException;
 import self.vikingar.model.base.BaseModel;
+import self.vikingar.model.enumType.FileSourceEnum;
 
 /**
  * @Author: YuanChangShuai
@@ -21,8 +23,18 @@ public class FileSourceDo extends BaseModel {
 
     private String fileType;
 
+    private FileSourceEnum fileSource;
+
+    private String sourcePath;
+
     private String filePath;
 
     private long fileSize;
+
+    public void checkIsSave() {
+        if (this.getId() == null) {
+            throw CommonException.newException("文件保存失败");
+        }
+    }
 
 }

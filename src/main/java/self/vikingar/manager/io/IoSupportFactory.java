@@ -28,7 +28,7 @@ public class IoSupportFactory implements PooledObjectFactory<IoSupport> {
     @Override
     public PooledObject<IoSupport> makeObject() throws Exception {
         log.info("创建IO操作对象");
-        return new DefaultPooledObject<>(new IoSupportByLocalImpl());
+        return new DefaultPooledObject<>(this.getIoSupport());
     }
 
     @Override
@@ -40,5 +40,9 @@ public class IoSupportFactory implements PooledObjectFactory<IoSupport> {
     @Override
     public boolean validateObject(PooledObject<IoSupport> p) {
         return true;
+    }
+
+    public IoSupport getIoSupport() {
+        return new IoSupportByLocalImpl();
     }
 }

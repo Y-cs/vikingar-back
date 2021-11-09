@@ -1,5 +1,8 @@
 package self.vikingar.service.source;
 
+import self.vikingar.config.constant.FilePathConstant;
+import self.vikingar.model.domain.FileSourceDo;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -9,5 +12,16 @@ import java.io.InputStream;
  * @Description:
  **/
 public interface SourceService {
-    long saveFile(String folder, String fileName, InputStream inputStream, long size, boolean cover) throws IOException;
+    /**
+     * 保存文件
+     *
+     * @param folder
+     * @param fileName
+     * @param inputStream
+     * @param size
+     * @param cover       是否覆盖
+     * @return
+     * @throws IOException
+     */
+    FileSourceDo saveFile(FilePathConstant folder, String fileName, InputStream inputStream, long size, boolean cover) throws IOException;
 }
