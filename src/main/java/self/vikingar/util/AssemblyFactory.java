@@ -13,24 +13,34 @@ import java.util.List;
  **/
 public class AssemblyFactory {
 
-    private AssemblyFactory(){}
-
-    public static <A, B> B assembling(A a, Class<B> clazz, AssemblyProcess<A, B> process) {
-        B b = BeanUtils.instantiateClass(clazz);
-        process.assembly(a, b);
-        return b;
+    private AssemblyFactory() {
     }
 
-    public static <A, B> B defaultAssembling(A a, Class<B> clazz) {
-        return assembling(a, clazz, BeanUtils::copyProperties);
+    public static <A, B> B transformation(A source, B target, AssemblyProcess<A, B> process) {
+        process.assembly(source, target);
+        return target;
     }
 
-    public static <A, B> List<B> listAssembling(List<A> as, Class<B> clazz) {
-        List<B> bs = new ArrayList<>();
-        for (A a : as) {
-            bs.add(assembling(a, clazz, BeanUtils::copyProperties));
+    public static <A, B> B defaultTransformation(A source, B target) {
+        return transformation(source,target,BeanUtils::copyProperties);
+    }
+
+    public static <A, B> B assembling(A source, Class<B> targetClazz, AssemblyProcess<A, B> process) {
+        B target = BeanUtils.instantiateClass(targetClazz);
+        process.assembly(source, target);
+        return target;
+    }
+
+    public static <A, B> B defaultAssembling(A source, Class<B> targetClazz) {
+        return assembling(source, targetClazz, BeanUtils::copyProperties);
+    }
+
+    public static <A, B> List<B> listAssembling(List<A> sources, Class<B> targetClazz) {
+        List<B> targets = new ArrayList<>();
+        for (A source : sources) {
+            targets.add(assembling(source, targetClazz, BeanUtils::copyProperties));
         }
-        return bs;
+        return targets;
     }
 
 }

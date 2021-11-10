@@ -2,6 +2,7 @@ package self.vikingar.service.source;
 
 import self.vikingar.config.constant.FilePathConstant;
 import self.vikingar.model.domain.FileSourceDo;
+import self.vikingar.model.dto.file.FileSourceInsideDto;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,4 +25,11 @@ public interface SourceService {
      * @throws IOException
      */
     FileSourceDo saveFile(FilePathConstant folder, String fileName, InputStream inputStream, long size, boolean cover) throws IOException;
+
+    /**
+     * 获取资源
+     * @param sourceId
+     * @return
+     */
+    FileSourceInsideDto getFileSourceById(long sourceId);
 }

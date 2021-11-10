@@ -1,8 +1,16 @@
 package self.vikingar.service.document;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import self.vikingar.config.exception.CommonException;
+import self.vikingar.manager.io.IoHandler;
+import self.vikingar.manager.io.pool.IoHandlerPool;
 import self.vikingar.mapper.document.DocumentMapper;
+import self.vikingar.model.dto.template.TemplateInsideDto;
 import self.vikingar.model.vo.document.DocumentVo;
+import self.vikingar.service.template.TemplateService;
+
+import java.io.IOException;
 
 /**
  * @Author: YuanChangShuai
@@ -10,17 +18,32 @@ import self.vikingar.model.vo.document.DocumentVo;
  * @Description:
  **/
 @Service
+@Slf4j
 public class DocumentServiceImpl implements DocumentService {
 
     private final DocumentMapper documentMapper;
 
-    public DocumentServiceImpl(DocumentMapper documentMapper) {
+    private final TemplateService templateService;
+
+    private final IoHandlerPool ioHandlerPool;
+
+    public DocumentServiceImpl(DocumentMapper documentMapper, TemplateService templateService, IoHandlerPool ioHandlerPool) {
         this.documentMapper = documentMapper;
+        this.templateService = templateService;
+        this.ioHandlerPool = ioHandlerPool;
     }
 
     @Override
-    public void addDocument(DocumentVo documentVo) {
+    public boolean addDocument(DocumentVo documentVo) {
         //富文本  如何处理图片问题 静态解决  这里添加一个图片的管理
-
+        TemplateInsideDto defaultTemplate = templateService.getDefaultTemplate();
+        String filePath = defaultTemplate.getFilePath();
+        IoHandler handler = ioHandlerPool.getHandler();
+        try {
+            handler.readFile(filePath);
+        } catch (IOException e) {
+            throw CommonException.newException("模板读取错误", e);
+        }
+        return false;
     }
 }

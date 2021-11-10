@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import self.vikingar.config.constant.FilePathConstant;
-import self.vikingar.manager.io.IoObjectPool;
-import self.vikingar.manager.io.IoSupport;
+import self.vikingar.manager.io.pool.IoHandlerPool;
+import self.vikingar.manager.io.IoHandler;
 import self.vikingar.mapper.source.FileSourceMapper;
 import self.vikingar.model.domain.FileSourceDo;
+import self.vikingar.model.dto.file.FileSourceInsideDto;
+import self.vikingar.util.AssemblyFactory;
 import self.vikingar.util.FileHashUtil;
 import self.vikingar.util.PathUtil;
 
@@ -27,11 +29,11 @@ public class SourceServiceImpl implements SourceService {
 
     private final FileSourceMapper fileSourceMapper;
 
-    private final IoObjectPool ioObjectPool;
+    private final IoHandlerPool ioHandlerPool;
 
-    public SourceServiceImpl(FileSourceMapper fileSourceMapper) {
+    public SourceServiceImpl(FileSourceMapper fileSourceMapper, IoHandlerPool ioHandlerPool) {
         this.fileSourceMapper = fileSourceMapper;
-        ioObjectPool = new IoObjectPool();
+        this.ioHandlerPool = ioHandlerPool;
     }
 
     @Override
@@ -46,7 +48,7 @@ public class SourceServiceImpl implements SourceService {
             //数据库不存在这个文件->保存文件
             fileSourceDo = new FileSourceDo();
             //获取资源
-            IoSupport ioSupport = ioObjectPool.getObject();
+            IoHandler ioSupport = ioHandlerPool.getHandler();
             String filePath = "";
             String folderPath = folder.getFolder();
             try {
@@ -55,7 +57,7 @@ public class SourceServiceImpl implements SourceService {
                 filePath = ioSupport.saveFile(name, new ByteArrayInputStream(out.toByteArray()), size, cover);
             } finally {
                 //归还资源
-                ioObjectPool.returnObject(ioSupport);
+                ioHandlerPool.returnHandler(ioSupport);
             }
             //保存到数据库
             String[] fileNameSplit = fileName.split("\\.");
@@ -69,6 +71,12 @@ public class SourceServiceImpl implements SourceService {
         }
         fileSourceDo.checkIsSave();
         return fileSourceDo;
+    }
+
+    @Override
+    public FileSourceInsideDto getFileSourceById(long sourceId) {
+        FileSourceDo fileSourceDo = fileSourceMapper.selectById(sourceId);
+        return AssemblyFactory.defaultAssembling(fileSourceDo,FileSourceInsideDto.class);
     }
 
     private String getName(String fileName, byte[] bytes, long size) throws IOException {

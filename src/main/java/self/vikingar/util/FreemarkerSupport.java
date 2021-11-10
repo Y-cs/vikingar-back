@@ -3,7 +3,7 @@ package self.vikingar.util;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import self.vikingar.manager.io.IoDefaultPathSupport;
+import self.vikingar.manager.io.addition.IoDefaultPathSupport;
 import self.vikingar.model.dto.document.DocumentDto;
 
 import java.io.File;

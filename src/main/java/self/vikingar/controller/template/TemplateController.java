@@ -28,7 +28,7 @@ public class TemplateController {
         this.templateService = templateService;
     }
 
-    @PutMapping
+    @PostMapping("save")
     public ApiResult<String> insert(@RequestParam("file") MultipartFile file,
                                     @RequestParam(value = "templateName", defaultValue = "") String templateName,
                                     @RequestParam(value = "description", defaultValue = "") String description,
@@ -41,22 +41,22 @@ public class TemplateController {
         fileSourceDto.setOriginalFilename(file.getOriginalFilename());
         fileSourceDto.setInputStream(file.getInputStream());
         fileSourceDto.setSize(file.getSize());
-        templateService.insert(fileSourceDto);
+        templateService.insertOrUpdate(fileSourceDto);
         return ApiResult.success();
     }
 
-    @GetMapping
+    @PostMapping("paging")
     public PageResult<TemplateDto> paging(@RequestBody TemplatePagingVo templatePagingVo) {
         List<TemplateDto> date = templateService.paging(templatePagingVo);
         return PageResult.paging(date);
     }
 
-    @DeleteMapping
+    @PostMapping("delete")
     public ApiResult<String> delete(@RequestBody TemplateVo templateVo) {
         return templateService.delete(templateVo.getId()) ? ApiResult.success() : ApiResult.fail();
     }
 
-    @PostMapping
+    @PostMapping("update")
     public ApiResult<String> update(@RequestParam("file") MultipartFile file,
                                     @RequestParam("id") Long id,
                                     @RequestParam(value = "templateName", defaultValue = "") String templateName,
@@ -70,7 +70,7 @@ public class TemplateController {
         fileSourceDto.setOriginalFilename(file.getOriginalFilename());
         fileSourceDto.setInputStream(file.getInputStream());
         fileSourceDto.setSize(file.getSize());
-        return templateService.update(fileSourceDto) ? ApiResult.success() : ApiResult.fail();
+        return templateService.insertOrUpdate(fileSourceDto) ? ApiResult.success() : ApiResult.fail();
     }
 
 }

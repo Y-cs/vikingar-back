@@ -1,28 +1,30 @@
-package self.vikingar.manager.io;
+package self.vikingar.manager.io.pool;
 
 import org.apache.commons.pool2.ObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import self.vikingar.config.exception.CommonException;
+import self.vikingar.manager.io.IoHandler;
+import self.vikingar.manager.io.config.IoConfig;
 
 /**
  * @Author: YuanChangShuai
  * @Date: 2021/10/28 14:24
  * @Description:
  **/
-public class IoObjectPool {
+public class IoHandlerPool {
 
-    private final ObjectPool<IoSupport> objectPool;
+    private final ObjectPool<IoHandler> objectPool;
 
-    public IoObjectPool() {
-        GenericObjectPoolConfig<IoSupport> config = new GenericObjectPoolConfig<>();
+    public IoHandlerPool(IoConfig ioConfig) {
+        GenericObjectPoolConfig<IoHandler> config = new GenericObjectPoolConfig<>();
         config.setMaxTotal(Runtime.getRuntime().availableProcessors() * 2);
         config.setMaxIdle(1);
         config.setMinIdle(0);
-        this.objectPool = new GenericObjectPool<>(new IoSupportFactory(), config);
+        this.objectPool = new GenericObjectPool<>(new IoHandlerFactory(ioConfig), config);
     }
 
-    public IoSupport getObject() {
+    public IoHandler getHandler() {
         try {
             return objectPool.borrowObject();
         } catch (Exception e) {
@@ -30,7 +32,7 @@ public class IoObjectPool {
         }
     }
 
-    public void returnObject(IoSupport ioSupport){
+    public void returnHandler(IoHandler ioSupport){
         try {
             objectPool.returnObject(ioSupport);
         } catch (Exception e) {
@@ -38,7 +40,7 @@ public class IoObjectPool {
         }
     }
 
-    public ObjectPool<IoSupport> getObjectPool() {
+    public ObjectPool<IoHandler> getObjectPool() {
         return objectPool;
     }
 }

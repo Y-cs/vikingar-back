@@ -1,4 +1,4 @@
-package self.vikingar.manager.io;
+package self.vikingar.manager.io.addition;
 
 import lombok.SneakyThrows;
 import org.springframework.util.ResourceUtils;

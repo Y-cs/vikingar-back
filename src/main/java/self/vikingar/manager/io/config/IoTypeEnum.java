@@ -1,4 +1,4 @@
-package self.vikingar.model.enumType;
+package self.vikingar.manager.io.config;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 
@@ -7,9 +7,15 @@ import com.baomidou.mybatisplus.annotation.EnumValue;
  * @Date: 2021/11/8 16:43
  * @Description:
  **/
-public enum FileSourceEnum {
+public enum IoTypeEnum {
 
+    /**
+     * 本地
+     */
     LOCATION(1),
+    /**
+     * 阿里云
+     */
     ALI_OSS(2),
 
     ;
@@ -17,7 +23,7 @@ public enum FileSourceEnum {
     @EnumValue
     private final int status;
 
-    FileSourceEnum(int status) {
+    IoTypeEnum(int status) {
         this.status = status;
     }
 }

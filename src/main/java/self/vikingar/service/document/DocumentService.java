@@ -11,6 +11,7 @@ public interface DocumentService {
     /**
      * 添加文档
      * @param documentVo
+     * @return
      */
-    void addDocument(DocumentVo documentVo);
+    boolean addDocument(DocumentVo documentVo);
 }

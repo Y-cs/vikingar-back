@@ -1,6 +1,7 @@
 package self.vikingar.service.template;
 
 import self.vikingar.model.dto.template.TemplateDto;
+import self.vikingar.model.dto.template.TemplateInsideDto;
 import self.vikingar.model.dto.template.TemplateSaveOrUpdateDto;
 import self.vikingar.model.vo.template.TemplatePagingVo;
 
@@ -21,7 +22,7 @@ public interface TemplateService {
      * @return
      * @throws IOException
      */
-    boolean insert(TemplateSaveOrUpdateDto dto) throws IOException;
+    boolean insertOrUpdate(TemplateSaveOrUpdateDto dto) throws IOException;
 
     /**
      * 分页
@@ -40,11 +41,8 @@ public interface TemplateService {
     boolean delete(Long id);
 
     /**
-     * 更新
-     *
-     * @param dto
+     * 获取默认模板
      * @return
-     * @throws IOException
      */
-    boolean update(TemplateSaveOrUpdateDto dto) throws IOException;
+    TemplateInsideDto getDefaultTemplate();
 }

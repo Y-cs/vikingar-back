@@ -15,9 +15,7 @@ import self.vikingar.ano.NoLoginRequired;
 @NoLoginRequired
 public class BaseController {
 
-    @RequestMapping(value = "ping", method = {RequestMethod.GET, RequestMethod.HEAD,
-            RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE,
-            RequestMethod.OPTIONS, RequestMethod.TRACE})
+    @RequestMapping(value = "ping", method = {RequestMethod.GET, RequestMethod.POST})
     public String ping() {
         return "pang";
     }

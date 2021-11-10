@@ -1,7 +1,8 @@
 package self.vikingar.controller.document;
 
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import self.vikingar.ano.NoLoginRequired;
 import self.vikingar.model.base.ApiResult;
 import self.vikingar.model.vo.document.DocumentVo;
 import self.vikingar.service.document.DocumentService;
@@ -12,7 +13,7 @@ import self.vikingar.service.document.DocumentService;
  * @Description:
  **/
 @RestController
-@NoLoginRequired
+@RequestMapping("document")
 public class DocumentController {
 
     private final DocumentService documentService;
@@ -21,11 +22,11 @@ public class DocumentController {
         this.documentService = documentService;
     }
 
+    @PostMapping("add")
     public ApiResult<String> addDocument(DocumentVo documentVo) {
         documentService.addDocument(documentVo);
         return ApiResult.success();
     }
-
 
 
 }

@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import self.vikingar.config.exception.CommonException;
 import self.vikingar.model.base.BaseModel;
-import self.vikingar.model.enumType.FileSourceEnum;
+import self.vikingar.manager.io.config.IoTypeEnum;
 
 /**
  * @Author: YuanChangShuai
@@ -23,7 +23,7 @@ public class FileSourceDo extends BaseModel {
 
     private String fileType;
 
-    private FileSourceEnum fileSource;
+    private IoTypeEnum fileSource;
 
     private String sourcePath;
 

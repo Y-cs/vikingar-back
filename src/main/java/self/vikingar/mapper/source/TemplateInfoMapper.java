@@ -11,5 +11,8 @@ import self.vikingar.model.domain.TemplateInfoDo;
  **/
 @Repository
 public interface TemplateInfoMapper extends BaseMapper<TemplateInfoDo> {
+    /**
+     * 清楚默认
+     */
     void clearDefault();
 }

@@ -1,6 +1,7 @@
 package self.vikingar.manager.io;
 
-import self.vikingar.model.enumType.FileSourceEnum;
+import self.vikingar.manager.io.config.IoTypeEnum;
+import self.vikingar.manager.io.pool.PoolObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,22 +11,7 @@ import java.io.InputStream;
  * @Date: 2021/10/22 10:31
  * @Description:
  **/
-public interface IoSupport {
-
-    /**
-     * 初始化
-     */
-    void init();
-
-    /**
-     * 关闭
-     */
-    void close();
-
-    /**
-     * 清理
-     */
-    void clear();
+public interface IoHandler extends PoolObject {
 
     /**
      * 设置文件夹名
@@ -33,12 +19,6 @@ public interface IoSupport {
      * @param name
      */
     void setFolderName(String name);
-
-    /**
-     * 用于获取子类的类型枚举
-     * @return
-     */
-    FileSourceEnum getFileSource();
 
     /**
      * 保存文件
@@ -52,5 +32,19 @@ public interface IoSupport {
      */
     String saveFile(String name, InputStream inputStream, long size, boolean cover) throws IOException;
 
+    /**
+     * 读取流
+     *
+     * @param path
+     * @return
+     * @throws IOException io错误
+     */
+    InputStream readFile(String path) throws IOException;
 
+    /**
+     * 用于获取子类的类型枚举,这个用于标注实现的类型本地还是云还是巴拉巴拉的
+     * 由{@link AbstractIoHandler}实现
+     * @return
+     */
+    IoTypeEnum getFileSource();
 }

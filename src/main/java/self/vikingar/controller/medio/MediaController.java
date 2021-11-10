@@ -2,10 +2,7 @@ package self.vikingar.controller.medio;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import self.vikingar.config.exception.CommonException;
 import self.vikingar.model.base.ApiResult;
@@ -34,7 +31,7 @@ public class MediaController {
         this.mediaService = mediaService;
     }
 
-    @PutMapping
+    @PostMapping(upload)
     public ApiResult<String> uploadImage(@RequestParam("file") MultipartFile file) {
         String filename = file.getOriginalFilename();
         if (StringUtils.isBlank(filename) || !IMG_EXTENSION.contains(filename.substring(filename.indexOf(SEPARATOR_BY_FILE) + 1).toUpperCase())) {
