@@ -31,7 +31,7 @@ public class MediaController {
         this.mediaService = mediaService;
     }
 
-    @PostMapping(upload)
+    @PostMapping("upload")
     public ApiResult<String> uploadImage(@RequestParam("file") MultipartFile file) {
         String filename = file.getOriginalFilename();
         if (StringUtils.isBlank(filename) || !IMG_EXTENSION.contains(filename.substring(filename.indexOf(SEPARATOR_BY_FILE) + 1).toUpperCase())) {
