@@ -22,6 +22,11 @@ public class LogMessage {
     private String originalMessage;
 
     /**
+     * 拆解后信息
+     */
+    private List<String> messages;
+
+    /**
      * 参数表达式
      */
     private List<String> expression;
@@ -55,5 +60,30 @@ public class LogMessage {
      * 执行结果
      */
     private Object result;
+
+    /**
+     * 操作人
+     */
+    private long operator;
+
+    /**
+     * 错误
+     */
+    private Throwable exception;
+
+    /**
+     * 条件
+     */
+    private String condition;
+
+    /**
+     * 阻止记录
+     */
+    private boolean prevent;
+
+    /**
+     * 运行结果
+     */
+    private boolean operationResults;
 
 }

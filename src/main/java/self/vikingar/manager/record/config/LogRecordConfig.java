@@ -3,7 +3,8 @@ package self.vikingar.manager.record.config;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import self.vikingar.manager.record.RecordPersistence;
+import self.vikingar.manager.record.persistence.DefaultRecordPersistence;
+import self.vikingar.manager.record.persistence.RecordPersistence;
 
 /**
  * @Author: YuanChangShuai
@@ -14,11 +15,21 @@ import self.vikingar.manager.record.RecordPersistence;
 @Setter
 public class LogRecordConfig {
 
-    private String resultParam = "result";
-    private Parse parse;
+    /**
+     * 记录的解析方案
+     */
+    private Parse parse=new Parse();
 
-    private SpelRootObject spelRootObject;
-    private RecordPersistence recordPersistence;
+    private Long defaultOperator = -1L;
+
+    /**
+     * 传递给Spel解析器的RootObject
+     */
+    private SpelRootObject spelRootObject = new DefaultSpelRootObject();
+    /**
+     * 持久化操作对象
+     */
+    private RecordPersistence recordPersistence = new DefaultRecordPersistence();
 
     public static class Parse {
         private String start;

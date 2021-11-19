@@ -1,7 +1,5 @@
 package self.vikingar.manager.record.ano;
 
-import self.vikingar.manager.record.enums.RecordEnum;
-
 import java.lang.annotation.*;
 
 /**
@@ -18,7 +16,19 @@ public @interface LogRecord {
 
     String fail() default "";
 
-    RecordEnum recordType();
+    /**
+     * 业务编码
+     *
+     * @return
+     */
+    String businessCode() default "";
+
+    /**
+     * 操作人
+     *
+     * @return
+     */
+    long operator() default -1;
 
     /**
      * 前置处理 某些场景下会修改入参 如果后置解析的话会导致取到的是方法执行结束后的结果
@@ -28,5 +38,12 @@ public @interface LogRecord {
      * @return
      */
     boolean preParsing() default false;
+
+    /**
+     * 打印条件
+     *
+     * @return
+     */
+    String condition() default "";
 
 }

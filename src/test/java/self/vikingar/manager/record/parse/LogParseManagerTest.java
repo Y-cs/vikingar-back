@@ -3,7 +3,6 @@ package self.vikingar.manager.record.parse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import self.vikingar.manager.record.config.LogRecordConfig;
-import self.vikingar.manager.record.config.SpelRootObject;
 import self.vikingar.manager.record.model.LogMessage;
 
 /**
@@ -18,12 +17,7 @@ public class LogParseManagerTest {
     public static void before() {
         LogRecordConfig logRecordConfig = new LogRecordConfig();
         logRecordConfig.setParse(new LogRecordConfig.Parse());
-        logRecordConfig.setSpelRootObject(new SpelRootObject() {
-        });
-        logParseManager = new LogParseManager(logRecordConfig);
-        logParseManager.addParses(new LogParseBySpacer());
-        logParseManager.addParses(new LogParseBySpel());
-        logParseManager.addParses(new LogParseByAssemble());
+        logParseManager = LogParseManager.getDefault(logRecordConfig);
     }
 
     @Test
@@ -36,5 +30,13 @@ public class LogParseManagerTest {
         System.out.println(logMessage);
     }
 
+    @Test
+    public void test4(){
+        int a=0;
+        for (int i = 0; i < 20; i++) {
+            a=10;
+        }
+        System.out.println(a);
+    }
 
 }

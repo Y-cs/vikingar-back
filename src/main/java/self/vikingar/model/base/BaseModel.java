@@ -60,16 +60,26 @@ public class BaseModel {
     public void isInsert() {
         id = null;
         AccountInfo account = AccountContextFactory.getInstance().getAccount();
-        createdId = account.id();
-        createdName = account.username();
+        if (account != null) {
+            createdId = account.id();
+            createdName = account.username();
+        } else {
+            createdId = -1L;
+            createdName = "无用户";
+        }
         createdTime = LocalDateTime.now();
         valid = 1;
     }
 
     public void isUpdate() {
         AccountInfo account = AccountContextFactory.getInstance().getAccount();
-        lastModifiedId = account.id();
-        lastModifiedName = account.username();
+        if (account != null) {
+            lastModifiedId = account.id();
+            lastModifiedName = account.username();
+        } else {
+            lastModifiedId = -1L;
+            lastModifiedName = "无用户";
+        }
         lastModifiedTime = LocalDateTime.now();
     }
 

@@ -1,5 +1,6 @@
 package self.vikingar.manager.record.parse;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
@@ -10,42 +11,41 @@ import java.util.Map;
 
 /**
  * @Author: YuanChangShuai
- * @Date: 2021/11/16 14:59
+ * @Date: 2021/11/19 14:09
  * @Description:
  **/
+@Slf4j
 public class LogParseBySpel extends LogParse {
-
     @Override
     public void init() {
+
     }
 
     @Override
     public void doExecutor(LogMessage logMessage) {
-        Map<String, Object> value = new HashMap<>(logMessage.getExpression().size());
         if (logMessage.getExpression() != null) {
-            StandardEvaluationContext ctx = new StandardEvaluationContext();
-            ctx.setRootObject(getConfig().getSpelRootObject());
-            for (int i = 0; i < logMessage.getArgNames().length; i++) {
-                ctx.setVariable(logMessage.getArgNames()[i], logMessage.getArgs()[i]);
-            }
-            ctx.setVariable(getConfig().getResultParam(), logMessage.getResult());
+            StandardEvaluationContext spelContext = super.getSpelContext();
+            Map<String, Object> valueMap = new HashMap<>(logMessage.getExpression().size());
             for (String spel : logMessage.getExpression()) {
-                value.put(spel, doParseSpel(spel, ctx));
+                valueMap.put(spel, doParseSpel(spel, spelContext));
             }
+            logMessage.setValues(valueMap);
         }
-        logMessage.setValues(value);
         super.doNext(logMessage);
     }
 
-    private Object doParseSpel(String spel, StandardEvaluationContext ctx) {
-        SpelExpressionParser parser = new SpelExpressionParser();
-        Expression exp = parser.parseExpression(this.handleSpel(spel));
-        return exp.getValue(ctx);
-    }
 
-    private String handleSpel(String spel) {
-        return spel.replace(getConfig().getParse().getStart(), "")
-                .replace(getConfig().getParse().getEnd(), "").trim();
+    private Object doParseSpel(String spel, StandardEvaluationContext ctx) {
+        try {
+            SpelExpressionParser parser = new SpelExpressionParser();
+            Expression exp = parser.parseExpression(spel);
+            return exp.getValue(ctx);
+        } catch (Exception e) {
+            if (log.isDebugEnabled()) {
+                log.error("Spel解析错误:",e);
+            }
+            return null;
+        }
     }
 
 }

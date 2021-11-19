@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.scheduling.annotation.EnableAsync;
+import self.vikingar.manager.record.spring.EnableRecord;
 
 /**
  * @Author: YuanChangShuai
@@ -16,6 +17,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 @MapperScan("self.vikingar.mapper.*")
 @EnableAsync
+@EnableRecord
 @ConfigurationPropertiesScan(basePackages={"self.vikingar.config.configuration"})
 public class Application {
 

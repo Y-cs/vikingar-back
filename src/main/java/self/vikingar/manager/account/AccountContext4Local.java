@@ -21,7 +21,8 @@ public class AccountContext4Local<T> implements AccountContext<T> {
 
     @Override
     public T getAccount() {
-        return CACHE.getIfPresent(SessionSupport.getToken4Session());
+        return SessionSupport.getToken4Session() == null ? null :
+                CACHE.getIfPresent(SessionSupport.getToken4Session());
     }
 
     @Override

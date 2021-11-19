@@ -1,6 +1,8 @@
 package self.vikingar.manager.record.parse;
 
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 import self.vikingar.manager.record.config.LogRecordConfig;
+import self.vikingar.manager.record.context.SpelContext;
 import self.vikingar.manager.record.model.LogMessage;
 
 /**
@@ -46,6 +48,14 @@ public abstract class LogParse {
         if (next != null) {
             next.doExecutor(logMessage);
         }
+    }
+
+    protected StandardEvaluationContext getSpelContext() {
+        StandardEvaluationContext spelContext = SpelContext.INSTANCE.getSpelContext();
+        if (spelContext == null) {
+            spelContext = SpelContext.INSTANCE.createContext(getConfig().getSpelRootObject());
+        }
+        return spelContext;
     }
 
 }

@@ -1,13 +1,13 @@
 package self.vikingar.manager.record;
 
+import org.aspectj.lang.reflect.MethodSignature;
 import self.vikingar.manager.record.ano.LogRecord;
 import self.vikingar.manager.record.config.LogRecordConfig;
-import self.vikingar.manager.record.parse.LogParseByAssemble;
 import self.vikingar.manager.record.parse.LogParseBySpacer;
-import self.vikingar.manager.record.parse.LogParseBySpel;
+import self.vikingar.manager.record.parse.LogParseByParam;
 import self.vikingar.manager.record.parse.LogParseManager;
+import self.vikingar.manager.record.persistence.RecordPersistence;
 
-import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -33,12 +33,16 @@ public class RecordHandleFactory {
         this(config, parseManager, null);
     }
 
+    /**
+     * @param config       配置
+     * @param parseManager 解析管理器
+     * @param persistence  持久化方案
+     */
     public RecordHandleFactory(LogRecordConfig config, LogParseManager parseManager, RecordPersistence persistence) {
         if (parseManager == null) {
             parseManager = new LogParseManager(config);
             parseManager.addParses(new LogParseBySpacer());
-            parseManager.addParses(new LogParseBySpel());
-            parseManager.addParses(new LogParseByAssemble());
+            parseManager.addParses(new LogParseByParam());
         }
         if (persistence == null) {
             persistence = config.getRecordPersistence();
@@ -48,20 +52,28 @@ public class RecordHandleFactory {
         this.persistence = persistence;
     }
 
-
-    public RecordHandle create(Method method, List<Object> args, LogRecord logRecord) {
+    /**
+     * 创建处理对象
+     *
+     * @param methodSignature 方法对象
+     * @param args            参数
+     * @param logRecord       注解类
+     * @return
+     */
+    public RecordHandle create(MethodSignature methodSignature, List<Object> args, LogRecord logRecord) {
         RecordHandle recordHandle = new RecordHandle(config, parseManager, persistence, autoParse);
-        recordHandle.setRecordInfo(method, args, logRecord);
+        recordHandle.setRecordInfo(methodSignature, args, logRecord);
         return recordHandle;
     }
 
     /**
      * 是否自动解析 在create时和setResult时
      * 自动解析可能会造成不解析:
-     *      1.先设置后置解析
-     *      2.create->不解析
-     *      3.设置前置解析
-     *      4.setResult->不解析
+     * 1.先设置后置解析
+     * 2.create->不解析
+     * 3.设置前置解析
+     * 4.setResult->不解析
+     *
      * @param autoParse
      */
     public void setAutoParse(boolean autoParse) {

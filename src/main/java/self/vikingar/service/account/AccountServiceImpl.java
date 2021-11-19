@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import self.vikingar.config.exception.CommonException;
 import self.vikingar.manager.account.AccountContext;
 import self.vikingar.manager.account.AccountContextFactory;
+import self.vikingar.manager.record.ano.LogRecord;
+import self.vikingar.manager.record.context.RecordContext;
 import self.vikingar.manager.session.SessionSupport;
 import self.vikingar.manager.session.TokenCreator;
 import self.vikingar.mapper.account.AccountMapper;
@@ -30,6 +32,7 @@ public class AccountServiceImpl implements AccountService {
         this.accountContext = AccountContextFactory.getInstance();
     }
 
+    @LogRecord(success = "用户:`#username`登陆成功!", fail = "用户:`#username`登陆失败!", preParsing = false)
     @Override
     public AuthDto login(String username, String password) {
         AccountDo accountDo = accountMapper.selectOne(new LambdaQueryWrapper<AccountDo>()
@@ -52,6 +55,7 @@ public class AccountServiceImpl implements AccountService {
                 .username(accountDo.getUsername())
                 .password(accountDo.getPassword())
         );
+        RecordContext.INSTANCE.addParam("ofContent", accountDo);
         return new AuthDto().setToken(token);
     }
 
