@@ -27,5 +27,6 @@ public class LogRecordDo extends BaseModel {
     private String message;
     private String method;
     private String exception;
+    private String extend;
 
 }

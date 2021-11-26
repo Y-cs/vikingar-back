@@ -1,11 +1,15 @@
 package self.vikingar.service.record;
 
 import org.springframework.stereotype.Service;
-import self.vikingar.manager.record.ano.LogRecord;
-import self.vikingar.manager.record.model.LogMessage;
-import self.vikingar.manager.record.persistence.RecordPersistence;
+import self.vikingar.manager.record.config.ParameterKey;
+import self.vikingar.manager.record.config.RecordPersistence;
+import self.vikingar.manager.record.context.PersistenceContext;
 import self.vikingar.mapper.record.LogRecordMapper;
 import self.vikingar.model.domain.LogRecordDo;
+
+import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @Author: YuanChangShuai
@@ -21,18 +25,24 @@ public class RecordService implements RecordPersistence {
         this.logRecordMapper = logRecordMapper;
     }
 
+
     @Override
-    public boolean save(LogMessage logMessage, LogRecord recordMaster) {
+    public void save(PersistenceContext persistenceContext) {
         LogRecordDo logRecordDo = new LogRecordDo();
-        logRecordDo.setBusinessCode(recordMaster.businessCode());
-        logRecordDo.setResultStatus(logMessage.isOperationResults());
-        logRecordDo.setMessage(logMessage.getPullOffMessage());
-        logRecordDo.setMethod(logMessage.getMethod() == null ? "" :
-                logMessage.getMethod().getDeclaringClass().getName() + "." + logMessage.getMethod().getName());
-        logRecordDo.setException(logMessage.getException() == null ? "" :
-                logMessage.getException().getMessage());
+        logRecordDo.setBusinessCode(persistenceContext.getBusinessCode());
+        logRecordDo.setResultStatus(persistenceContext.getThrowable() == null);
+        logRecordDo.setMessage(persistenceContext.getMessage());
+        Map<String, Object> parameter = persistenceContext.getParameter();
+        Object method = parameter.get(ParameterKey.METHOD.getKey());
+        String methodStr = "";
+        if (method instanceof Method) {
+            methodStr = ((Method) method).getName();
+        }
+        logRecordDo.setMethod(String.format("%s:%s",
+                Optional.ofNullable(parameter.get(ParameterKey.CLASS.getKey())).orElse(""), methodStr));
+        logRecordDo.setException(persistenceContext.getThrowable() == null ? "" : persistenceContext.getThrowable().getMessage());
+        logRecordDo.setExtend(persistenceContext.getExtend());
         logRecordDo.isInsert();
         logRecordMapper.insert(logRecordDo);
-        return true;
     }
 }

@@ -1,58 +1,37 @@
 package self.vikingar.manager.record.parse;
 
-import self.vikingar.manager.record.model.LogMessage;
 
-import java.util.ArrayList;
-import java.util.List;
+import self.vikingar.manager.record.context.ParseContext;
+import self.vikingar.manager.record.support.SpacerSupport;
 
 /**
  * @Author: YuanChangShuai
- * @Date: 2021/11/16 14:20
- * @Description: 用于提取日志参数
+ * @Date: 2021/11/23 10:20
+ * @Description:
  **/
 public class LogParseBySpacer extends LogParse {
-
     @Override
     public void init() {
 
     }
 
     @Override
-    public void doExecutor(LogMessage logMessage) {
-        handleSpacer(logMessage);
-        super.doNext(logMessage);
+    public void doExecutor(ParseContext parseContext) {
+        this.handleSpacer(parseContext);
+        super.doNext(parseContext);
     }
 
     /**
      * 拆解整个信息
      *
-     * @param logMessage
+     * @param parseContext
      */
-    protected void handleSpacer(LogMessage logMessage) {
-        String originalMessage = logMessage.getOriginalMessage();
-        List<String> message = new ArrayList<>();
-        List<String> expression = new ArrayList<>();
-        int indexTemp = -1, indexStart = -1, startTemp = 0, endTemp = 0;
-        while (indexStart < originalMessage.length()) {
-            indexTemp = indexStart + 1;
-            if ((indexStart = startTemp = originalMessage.indexOf(getConfig().getParse().getStart(), indexStart + 1)) == -1) {
-                break;
-            }
-            if ((indexStart = endTemp = originalMessage.indexOf(getConfig().getParse().getEnd(), indexStart + 1)) == -1) {
-                break;
-            }
-            message.add(originalMessage.substring(indexTemp, startTemp));
-            expression.add(this.handleSpel(originalMessage.substring(startTemp, endTemp + 1)));
-        }
-        message.add(originalMessage.substring(indexTemp, originalMessage.length()));
-        logMessage.setMessages(message);
-        logMessage.setExpression(expression);
+    protected void handleSpacer(ParseContext parseContext) {
+        SpacerSupport spacerSupport = new SpacerSupport(getConfig().getSplit().getStartChar(), getConfig().getSplit().getStartChar());
+        spacerSupport.doParse(parseContext.getMetaMessage());
+        parseContext.setSubMessage(spacerSupport.getMessage());
+        parseContext.setSpelExpression(spacerSupport.getExpression());
     }
 
-    private String handleSpel(String spel) {
-        return spel.substring(getConfig().getParse().getStart().length(),
-                        spel.length() - getConfig().getParse().getEnd().length())
-                .trim();
-    }
 
 }

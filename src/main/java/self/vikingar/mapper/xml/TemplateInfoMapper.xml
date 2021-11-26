@@ -4,8 +4,8 @@
 
     <update id="clearDefault">
         update template_info
-        set isDefault=0
-        where isDefault = 1
+        set is_default=0
+        where is_default = 1
     </update>
 
 </mapper>

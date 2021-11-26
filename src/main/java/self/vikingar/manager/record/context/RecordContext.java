@@ -1,37 +1,43 @@
 package self.vikingar.manager.record.context;
 
-import java.util.Collections;
-import java.util.HashMap;
+import lombok.Data;
+
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * @Author: YuanChangShuai
- * @Date: 2021/11/19 9:48
+ * @Date: 2021/11/22 15:10
  * @Description:
  **/
-public enum RecordContext {
+@Data
+public class RecordContext {
 
     /**
-     * 中央参数单例
+     * 重入次数
      */
-    INSTANCE;
+    private int step;
+    /**
+     * 参数
+     */
+    private List<Map<String, Object>> parameter;
 
-    private final ThreadLocal<Map<String, Object>> THREAD_PARAM = new ThreadLocal<>();
+    /**
+     * 通用参数
+     */
+    private Map<String, Object> acrossParameter;
 
-    public void addParam(String key, Object value) {
-        Map<String, Object> map = Optional.ofNullable(THREAD_PARAM.get()).orElse(new HashMap<>());
-        map.put(key, value);
-        THREAD_PARAM.set(map);
+    /**
+     * 进
+     */
+    public void stepForward() {
+        this.step++;
     }
 
-    public Map<String, Object> getParam() {
-        Map<String, Object> map = THREAD_PARAM.get();
-        return map == null ? Collections.EMPTY_MAP : map;
+    /**
+     * 退
+     */
+    public void stepBack() {
+        this.step--;
     }
-
-    public void clear() {
-        THREAD_PARAM.remove();
-    }
-
 }

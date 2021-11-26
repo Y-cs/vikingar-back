@@ -26,4 +26,8 @@ public enum IoTypeEnum {
     IoTypeEnum(int status) {
         this.status = status;
     }
+
+    public int getStatus() {
+        return status;
+    }
 }

@@ -3,10 +3,9 @@ package self.vikingar.config.record;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import self.vikingar.manager.account.AccountContextFactory;
-import self.vikingar.manager.record.config.SpelRootObject;
+import self.vikingar.manager.record.config.RecordOperator;
+import self.vikingar.manager.record.config.RecordRootObject;
 import self.vikingar.model.dto.account.AccountInfo;
-
-import java.util.Optional;
 
 /**
  * @Author: YuanChangShuai
@@ -17,10 +16,10 @@ import java.util.Optional;
 public class RecordConfig {
 
     @Bean
-    public SpelRootObject getSpelRootObject() {
+    public RecordRootObject getSpelRootObject() {
         return () -> {
             AccountInfo account = AccountContextFactory.getInstance().getAccount();
-            return account != null ? Optional.ofNullable(account.id()).orElse(-1L) : -1;
+            return account != null ? new RecordOperator().id(account.id()).name(account.username()) : new RecordOperator();
         };
     }
 

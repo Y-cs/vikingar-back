@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import self.vikingar.config.configuration.ApplicationConfig;
 import self.vikingar.config.constant.FilePathConstant;
 import self.vikingar.config.constant.GlobalConstant;
+import self.vikingar.manager.record.ano.Record;
 import self.vikingar.model.domain.FileSourceDo;
 import self.vikingar.model.dto.media.MediaSaveOrUpdateDto;
 import self.vikingar.service.source.SourceService;
@@ -31,6 +32,7 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
+    @Record(success = "上传了一张图片")
     public String uploadImage(MediaSaveOrUpdateDto dto) throws IOException {
         FileSourceDo fileSourceDo = sourceService.saveFile(FilePathConstant.MEDIA,
                 dto.getOriginalFilename(),

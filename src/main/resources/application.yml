@@ -31,7 +31,7 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
   mapper-locations: classpath:self/vikingar/mapper/xml/*.xml
-  type-enums-package: self.vikingar.model.enumType
+  type-enums-package: self.vikingar
 server:
   tomcat:
     threads:

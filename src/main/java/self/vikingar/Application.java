@@ -6,7 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.scheduling.annotation.EnableAsync;
-import self.vikingar.manager.record.spring.EnableRecord;
+import self.vikingar.manager.record.spring.ano.EnableRecord;
 
 /**
  * @Author: YuanChangShuai

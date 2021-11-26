@@ -1,7 +1,7 @@
 package self.vikingar.manager.record.parse;
 
-import lombok.extern.slf4j.Slf4j;
-import self.vikingar.manager.record.model.LogMessage;
+
+import self.vikingar.manager.record.context.ParseContext;
 
 import java.util.Iterator;
 import java.util.List;
@@ -9,36 +9,26 @@ import java.util.Map;
 
 /**
  * @Author: YuanChangShuai
- * @Date: 2021/11/16 16:44
+ * @Date: 2021/11/23 13:39
  * @Description:
  **/
-@Slf4j
 public class LogParseByAssemble extends LogParse {
-
-
     @Override
     public void init() {
 
     }
 
     @Override
-    public void doExecutor(LogMessage logMessage) {
-        setPullOffMessage(logMessage);
-        setOperator(logMessage);
-        super.doNext(logMessage);
+    public void doExecutor(ParseContext parseContext) {
+        setPullOffMessage(parseContext);
+        super.doNext(parseContext);
     }
 
-    private void setOperator(LogMessage logMessage) {
-        logMessage.setOperator(getConfig().getSpelRootObject() == null ?
-                getConfig().getDefaultOperator() :
-                getConfig().getSpelRootObject().getOperator());
-    }
-
-    private void setPullOffMessage(LogMessage logMessage) {
-        List<String> messages = logMessage.getMessages();
-        List<String> expression = logMessage.getExpression();
+    private void setPullOffMessage(ParseContext parseContext) {
+        List<String> messages = parseContext.getSubMessage();
+        List<String> expression = parseContext.getSpelExpression();
         Iterator<String> expressionIterator = expression.iterator();
-        Map<String, Object> values = logMessage.getValues();
+        Map<String, Object> values = parseContext.getAnalyticValue();
         StringBuilder pullOffMsg = new StringBuilder();
         for (String message : messages) {
             pullOffMsg.append(message);
@@ -46,6 +36,6 @@ public class LogParseByAssemble extends LogParse {
                 pullOffMsg.append(values.get(expressionIterator.next()));
             }
         }
-        logMessage.setPullOffMessage(pullOffMsg.toString());
+        parseContext.setResultMessage(pullOffMsg.toString());
     }
 }

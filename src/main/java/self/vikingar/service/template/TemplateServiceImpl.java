@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import self.vikingar.config.constant.FilePathConstant;
 import self.vikingar.config.exception.CommonException;
+import self.vikingar.manager.record.ano.Record;
+import self.vikingar.manager.record.context.RecordContextManager;
 import self.vikingar.mapper.source.TemplateInfoMapper;
 import self.vikingar.model.domain.FileSourceDo;
 import self.vikingar.model.domain.TemplateInfoDo;
@@ -42,6 +44,7 @@ public class TemplateServiceImpl implements TemplateService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @Record(success = "用户:`username()``#dto.getId()==null?'上传了':'更新了'`模板:`#dto.getTemplateName()`")
     public boolean insertOrUpdate(TemplateSaveOrUpdateDto dto) throws IOException {
         boolean isSave = dto.getId() == null;
         TemplateInfoDo templateInfoDo;
@@ -65,7 +68,7 @@ public class TemplateServiceImpl implements TemplateService {
             templateNameBuilder.deleteCharAt(0);
             dto.setTemplateName(templateNameBuilder.toString());
         }
-        AssemblyFactory.defaultTransformation(templateInfoDo, dto);
+        AssemblyFactory.defaultTransformation(dto, templateInfoDo);
         FileSourceDo fileSourceDo = sourceService.saveFile(FilePathConstant.TEMPLATE, originalFilename, dto.getInputStream(), dto.getSize(), true);
         templateInfoDo.setSourceId(fileSourceDo.getId());
         if (dto.isDefault()) {
@@ -85,7 +88,10 @@ public class TemplateServiceImpl implements TemplateService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @Record(success = "用户:`username()`删除了模板:`#template.getTemplateName()`")
     public boolean delete(Long id) {
+        TemplateInfoDo templateInfoDo = templateInfoMapper.selectById(id);
+        RecordContextManager.INSTANCE.addParam("template",templateInfoDo);
         return templateInfoMapper.deleteById(id) > 0;
     }
 

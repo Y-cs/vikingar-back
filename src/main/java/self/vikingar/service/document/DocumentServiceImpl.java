@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import self.vikingar.config.exception.CommonException;
 import self.vikingar.manager.io.IoHandler;
 import self.vikingar.manager.io.pool.IoHandlerPool;
+import self.vikingar.manager.record.ano.Record;
 import self.vikingar.mapper.document.DocumentMapper;
 import self.vikingar.model.dto.template.TemplateInsideDto;
 import self.vikingar.model.vo.document.DocumentVo;
@@ -34,6 +35,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
+    @Record(success = "用户:`username()`上传了文档:`#documentVo.getTitle()`")
     public boolean addDocument(DocumentVo documentVo) {
         //富文本  如何处理图片问题 静态解决  这里添加一个图片的管理
         TemplateInsideDto defaultTemplate = templateService.getDefaultTemplate();
