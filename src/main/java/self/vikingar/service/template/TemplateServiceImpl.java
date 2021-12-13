@@ -98,9 +98,11 @@ public class TemplateServiceImpl implements TemplateService {
     @Override
     @Transactional(readOnly = true)
     public TemplateInsideDto getDefaultTemplate() {
-        TemplateInfoDo templateInfoDo = templateInfoMapper.selectOne(new LambdaQueryWrapper<TemplateInfoDo>().eq(TemplateInfoDo::isDefault, true));
+        TemplateInfoDo templateInfoDo = templateInfoMapper.selectOne(
+                new LambdaQueryWrapper<TemplateInfoDo>().eq(TemplateInfoDo::getIsDefault, true));
         FileSourceInsideDto fileSource = sourceService.getFileSourceById(templateInfoDo.getSourceId());
-        return AssemblyFactory.defaultTransformation(templateInfoDo, AssemblyFactory.defaultAssembling(fileSource, TemplateInsideDto.class));
+        return AssemblyFactory.defaultTransformation(templateInfoDo,
+                AssemblyFactory.defaultAssembling(fileSource, TemplateInsideDto.class));
     }
 
 }

@@ -36,7 +36,7 @@ public class RecordParseFactory {
      *
      * @param logParse 解析器
      */
-    public void addParse(LogParse logParse) {
+    public synchronized void addParse(LogParse logParse) {
         logParse.setConfig(this.recordConfig);
         logParse.init();
         this.point.setNext(logParse);

@@ -3,6 +3,7 @@ package self.vikingar.model.domain;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 import self.vikingar.model.base.BaseModel;
 import self.vikingar.model.enumType.DocumentStatusEnum;
 
@@ -16,6 +17,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("document_info")
+@Accessors(chain = true)
 public class DocumentInfoDo extends BaseModel {
     /**
      * title              varchar(128) default ''                not null comment '标题',
@@ -25,6 +27,7 @@ public class DocumentInfoDo extends BaseModel {
      */
     private String title;
     private String document;
+    private Long sourceId;
     private Date issuingTime;
     private DocumentStatusEnum status;
 }

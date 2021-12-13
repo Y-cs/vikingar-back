@@ -1,6 +1,7 @@
 package self.vikingar.manager.io;
 
 import self.vikingar.manager.io.config.IoTypeEnum;
+import self.vikingar.manager.io.model.PreUseCharIo;
 import self.vikingar.manager.io.pool.PoolObject;
 
 import java.io.IOException;
@@ -44,7 +45,16 @@ public interface IoHandler extends PoolObject {
     /**
      * 用于获取子类的类型枚举,这个用于标注实现的类型本地还是云还是巴拉巴拉的
      * 由{@link AbstractIoHandler}实现
+     *
      * @return
      */
     IoTypeEnum getFileSource();
+
+    /**
+     * 获取输出流
+     *
+     * @param name
+     * @return
+     */
+    PreUseCharIo getWriter(String name);
 }

@@ -1,14 +1,18 @@
 package self.vikingar.service.source;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import self.vikingar.config.constant.FilePathConstant;
-import self.vikingar.manager.io.pool.IoHandlerPool;
+import self.vikingar.config.exception.CommonException;
 import self.vikingar.manager.io.IoHandler;
+import self.vikingar.manager.io.model.PreUseCharIo;
+import self.vikingar.manager.io.pool.IoHandlerPool;
 import self.vikingar.mapper.source.FileSourceMapper;
 import self.vikingar.model.domain.FileSourceDo;
 import self.vikingar.model.dto.file.FileSourceInsideDto;
+import self.vikingar.model.dto.source.SourcePreUseCharIo;
 import self.vikingar.util.AssemblyFactory;
 import self.vikingar.util.FileHashUtil;
 import self.vikingar.util.PathUtil;
@@ -76,7 +80,7 @@ public class SourceServiceImpl implements SourceService {
     @Override
     public FileSourceInsideDto getFileSourceById(long sourceId) {
         FileSourceDo fileSourceDo = fileSourceMapper.selectById(sourceId);
-        return AssemblyFactory.defaultAssembling(fileSourceDo,FileSourceInsideDto.class);
+        return AssemblyFactory.defaultAssembling(fileSourceDo, FileSourceInsideDto.class);
     }
 
     private String getName(String fileName, byte[] bytes, long size) throws IOException {
@@ -89,6 +93,39 @@ public class SourceServiceImpl implements SourceService {
             }
         }
         return result.toString();
+    }
+
+    @Override
+    public InputStream readFile(String path) {
+        try {
+            IoHandler handler = ioHandlerPool.getHandler();
+            return handler.readFile(path);
+        } catch (IOException e) {
+            throw CommonException.newException("文件读取错误", e);
+        }
+    }
+
+    @SneakyThrows
+    @Override
+    public SourcePreUseCharIo getOutputWriter(FilePathConstant folder, String fileName) {
+        /**
+         * 这种都属于预售型的操作怎么混淆文件名呢= =
+         */
+        IoHandler handler = ioHandlerPool.getHandler();
+        handler.setFolderName(folder.getFolder());
+        PreUseCharIo preUseCharIo = handler.getWriter(fileName);
+        SourcePreUseCharIo sourcePreUseCharIo = new SourcePreUseCharIo(preUseCharIo);
+        String[] fileNameSplit = fileName.split("\\.");
+        FileSourceDo fileSourceDo = new FileSourceDo();
+        fileSourceMapper.insert(fileSourceDo
+                .setFileName(fileName)
+                .setFilePath(preUseCharIo.getFile().getCanonicalPath())
+                .setSourcePath(PathUtil.inspect(folder.getFolder()) + fileName)
+                .setFileType(fileNameSplit.length > 1 ? fileNameSplit[1] : "")
+                .setFileSource(handler.getFileSource())
+                .setFileSize(-1));
+        sourcePreUseCharIo.setSourceId(fileSourceDo.getId());
+        return sourcePreUseCharIo;
     }
 
 }

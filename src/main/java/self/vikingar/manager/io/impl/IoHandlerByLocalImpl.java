@@ -1,11 +1,13 @@
 package self.vikingar.manager.io.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import self.vikingar.config.AsyncConfig;
 import self.vikingar.config.exception.CommonException;
 import self.vikingar.manager.io.AbstractIoHandler;
 import self.vikingar.manager.io.addition.IoDefaultPathSupport;
 import self.vikingar.manager.io.config.IoConfig;
 import self.vikingar.manager.io.config.IoLocalConfig;
+import self.vikingar.manager.io.model.PreUseCharIo;
 import self.vikingar.util.PathUtil;
 
 import javax.annotation.Nonnull;
@@ -19,7 +21,7 @@ import java.io.*;
 @Slf4j
 public class IoHandlerByLocalImpl extends AbstractIoHandler implements IoDefaultPathSupport {
 
-    public static final int MAX_READ_SIZE = 10240;
+    public static final int MAX_READ_SIZE = 1024;
     private IoLocalConfig localConfig;
 
     private String path;
@@ -90,6 +92,44 @@ public class IoHandlerByLocalImpl extends AbstractIoHandler implements IoDefault
         } else {
             throw new RuntimeException("文件不存在或错误");
         }
+    }
+
+    @Override
+    public PreUseCharIo getWriter(String name) {
+        PreUseCharIo preUseCharIo = new PreUseCharIo();
+        File file = new File(this.path + name);
+        preUseCharIo.setFile(file);
+        //管道-输出流
+        PipedWriter pipedWriter = new PipedWriter();
+        preUseCharIo.setWriter(pipedWriter);
+        //管道-输入流
+        try {
+            PipedReader pipedReader = new PipedReader(pipedWriter);
+            preUseCharIo.setReader(pipedReader);
+            //异步读取管道输入流
+            AsyncConfig.sync(() -> {
+                char[] chars = new char[MAX_READ_SIZE];
+                int index = 0;
+                try (FileWriter fileWriter = new FileWriter(file)) {
+                    while ((index = pipedReader.read(chars)) != -1) {
+                        fileWriter.write(chars, 0, index);
+                        System.out.println(chars);
+                    }
+                    fileWriter.flush();
+                } catch (IOException e) {
+                    log.error("pre use char io transfer write error", e);
+                } finally {
+                    try {
+                        pipedReader.close();
+                    } catch (IOException e) {
+                        log.error("pre use char io pipedReader close error", e);
+                    }
+                }
+            });
+        } catch (IOException e) {
+            log.error("pre use char io create error", e);
+        }
+        return preUseCharIo;
     }
 
 }

@@ -31,7 +31,7 @@ public class TemplateInfoDo extends BaseModel {
     private String templateName;
     private String description;
     private long sourceId;
-    private boolean isDefault;
+    private Boolean isDefault;
 
 
 }

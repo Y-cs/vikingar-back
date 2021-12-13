@@ -3,6 +3,7 @@ package self.vikingar.service.source;
 import self.vikingar.config.constant.FilePathConstant;
 import self.vikingar.model.domain.FileSourceDo;
 import self.vikingar.model.dto.file.FileSourceInsideDto;
+import self.vikingar.model.dto.source.SourcePreUseCharIo;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,4 +33,8 @@ public interface SourceService {
      * @return
      */
     FileSourceInsideDto getFileSourceById(long sourceId);
+
+    InputStream readFile(String path);
+
+    SourcePreUseCharIo getOutputWriter(FilePathConstant folder, String fileName);
 }
