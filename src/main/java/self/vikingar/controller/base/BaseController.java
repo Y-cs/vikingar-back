@@ -15,6 +15,7 @@ import self.vikingar.ano.NoLoginRequired;
 @NoLoginRequired
 public class BaseController {
 
+    @SuppressWarnings("java:S3752")
     @RequestMapping(value = "ping", method = {RequestMethod.GET, RequestMethod.POST})
     public String ping() {
         return "pang";

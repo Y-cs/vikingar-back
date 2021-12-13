@@ -23,11 +23,13 @@ import java.util.Map;
 @RequestMapping("${server.error.path:${error.path:/error}}")
 public class ErrorController implements org.springframework.boot.web.servlet.error.ErrorController {
 
+    @SuppressWarnings("java:S3752")
     @RequestMapping(produces = MediaType.TEXT_HTML_VALUE, method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
         throw CommonException.newException(getErrorMessage(request));
     }
 
+    @SuppressWarnings("java:S3752")
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
         throw CommonException.newException(getErrorMessage(request));
