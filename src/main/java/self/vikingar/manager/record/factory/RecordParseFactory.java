@@ -16,6 +16,7 @@ public class RecordParseFactory {
 
     private final LogParse head = new LogParseByEmpty();
 
+    @SuppressWarnings("java:S3077")
     private volatile LogParse point = head;
 
     public RecordParseFactory(RecordConfig recordConfig) {
